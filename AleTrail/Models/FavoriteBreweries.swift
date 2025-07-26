@@ -1,12 +1,27 @@
 //
-//  Item.swift
+//  FavoriteBreweries.swift
 //  AleTrail
 //
-//  Created by Jillian Scott on 7/23/25.
+//  Created by Jillian Scott on 7/26/25.
 //
 
-import Foundation
 import SwiftData
+
+@Model final class FavoriteBreweries: Identifiable {
+    var ids: Set<String>
+    
+    init(ids: Set<String>) {
+        self.ids = ids
+    }
+    
+    func removeFavorite(id: String) {
+        ids.remove(id)
+    }
+    
+    func addFavorite(id: String) {
+        ids.insert(id)
+    }
+}
 
 //@Model
 //final class FavoriteBrewery: Identifiable {
@@ -14,7 +29,7 @@ import SwiftData
 //    var name: String
 //    var city: String?
 //    var stateProvince: String?
-//    
+//
 //    init(
 //        id: String,
 //        name: String,
@@ -31,11 +46,3 @@ import SwiftData
 // TODO: - ^ Setting up offline functionality, in case we want to
 // display favorite breweries without even doing a network call. Might
 // make sense to just save the whole Brewery model, though, actually.
-
-@Model final class FavoriteBreweries: Identifiable {
-    var ids: Set<String>
-    
-    init(ids: Set<String>) {
-        self.ids = ids
-    }
-}

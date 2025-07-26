@@ -9,7 +9,7 @@ import Foundation
 
 enum BreweryServiceEndpoint {
     static let basePath: String = "https://api.openbrewerydb.org/v1/breweries"
-    static let perPage: Int = 10
+    static let perPage: Int = 20
     
     case list(page: Int)
     case search(city: String, page: Int)
@@ -54,5 +54,4 @@ enum BreweryServiceEndpoint {
         
         return url
     }
-    
 }

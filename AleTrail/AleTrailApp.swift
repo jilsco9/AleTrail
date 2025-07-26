@@ -22,11 +22,16 @@ struct AleTrailApp: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
+    
+    @State var appModel: AleTrailAppModel = {
+        AleTrailAppModel(breweryService: AleTrailBreweryService())
+    }()
 
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
         .modelContainer(sharedModelContainer)
+        .environment(appModel)
     }
 }
