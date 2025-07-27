@@ -12,7 +12,7 @@ struct ContentView: View {
     @Environment(AleTrailAppModel.self) private var appModel
     @Environment(\.modelContext) private var modelContext
     @Query private var settings: [Settings]
-        
+    
     func retrieveOrCreateFavoriteBreweries() {
         if let _ = settings.first {
             debugPrint("Found existing Settings model.")
@@ -26,34 +26,12 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             if let favoriteBreweries = settings.first {
-                    BreweryList(
-                        settings: favoriteBreweries
-                    )
-                    .toolbar {
-                        ToolbarItemGroup(placement: .bottomBar) {
-                            GlassEffectContainer {
-                                Button(BreweryListDisplayMode.all.title, systemImage: BreweryListDisplayMode.all.systemImage) {
-                                    withAnimation {
-                                        favoriteBreweries.breweryListDisplayMode = BreweryListDisplayMode.all.rawValue
-                                    }
-                                }
-                                .tint(favoriteBreweries.breweryListDisplayMode == BreweryListDisplayMode.all.rawValue ? .purple : .none)
-                                .buttonStyle(.bordered)
-                                
-                                Button(BreweryListDisplayMode.favorites.title, systemImage: BreweryListDisplayMode.favorites.systemImage) {
-                                    withAnimation {
-                                        favoriteBreweries.breweryListDisplayMode = BreweryListDisplayMode.favorites.rawValue
-                                    }
-                                    
-                                }
-                                .tint(favoriteBreweries.breweryListDisplayMode == BreweryListDisplayMode.favorites.rawValue ? .purple : .none)
-                                .buttonStyle(.bordered)
-                            }
-                            .controlSize(.large)
-                        }
-                        
-                        
-                    }
+                BreweryList(
+                    settings: favoriteBreweries
+                )
+                .toolbar {
+                    BreweryListDisplayModeToolbarGroup(favoriteBreweries: favoriteBreweries)
+                }
                 .navigationTitle("Breweries")
             } else {
                 // TODO: - Update...
