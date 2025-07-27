@@ -1,5 +1,5 @@
 //
-//  FavoriteBreweries.swift
+//  Settings.swift
 //  AleTrail
 //
 //  Created by Jillian Scott on 7/26/25.
@@ -7,11 +7,13 @@
 
 import SwiftData
 
-@Model final class FavoriteBreweries: Identifiable {
+@Model final class Settings: Identifiable {
     var ids: Set<String>
+    var displayMode: ListDisplayMode
     
-    init(ids: Set<String>) {
+    init(ids: Set<String>, listDisplayMode: ListDisplayMode = .all) {
         self.ids = ids
+        self.displayMode = displayMode
     }
     
     func removeFavorite(id: String) {

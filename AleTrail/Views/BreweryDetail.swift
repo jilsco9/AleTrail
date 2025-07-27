@@ -9,7 +9,7 @@ import SwiftUI
 
 struct BreweryDetail: View {
     let brewery: Brewery
-    let userFavorites: FavoriteBreweries
+    let userFavorites: Settings
     
     var isFavorite: Bool {
         userFavorites.ids.contains(brewery.id)
@@ -36,7 +36,7 @@ struct BreweryDetail: View {
     NavigationStack {
         BreweryDetail(
             brewery: Brewery.previewUnion,
-            userFavorites: FavoriteBreweries.preview
+            userFavorites: Settings.preview
         )
     }
     .environment(appModel)

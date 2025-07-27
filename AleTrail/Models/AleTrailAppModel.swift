@@ -12,14 +12,58 @@ import Foundation
 // But this is a small app and may have a small enough scope that one single
 // aggregate data model makes sense
 
+enum ListDisplayMode: String, Identifiable, CaseIterable {
+    case all
+    case favorites
+    
+    var id: ListDisplayMode {
+        self
+    }
+    
+    var title: String {
+        rawValue.capitalized
+    }
+    
+    var systemImage: String {
+        switch self {
+        case .all:
+            "list.bullet"
+        case .favorites:
+            "heart"
+        }
+    }
+}
+
 @MainActor @Observable class AleTrailAppModel {
     let breweryService: BreweryService
     
     var breweries: [Brewery] = []
     var displayedPage: Int = 1
     
+    var favoriteIDs: [String] = []
+    
+    var displayMode: ListDisplayMode = .all {
+        didSet {
+            switch displayMode {
+            case .all:
+                Task {
+                    try? await getBreweryList(initialFetch: true)
+                }
+            case .favorites:
+                Task {
+                    try? await getBreweriesByIDs(Array(favoriteIDs), initialFetch: true)
+                }
+            }
+        }
+    }
+    
     init(breweryService: BreweryService) {
         self.breweryService = breweryService
+    }
+    
+    // TODO: - Don't like this
+    func setFavoriteIDs(ids: [String]) {
+        self.favoriteIDs = ids
     }
     
     private func updatePage(initialFetch: Bool) {
