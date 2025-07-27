@@ -7,63 +7,14 @@
 
 import Foundation
 
-// TODO: - Make a note? That this is not how I would prefer to name this.
-// Normally it would be more limited in scope... properly modular.
-// But this is a small app and may have a small enough scope that one single
-// aggregate data model makes sense
-
-enum ListDisplayMode: String, Identifiable, CaseIterable {
-    case all
-    case favorites
-    
-    var id: ListDisplayMode {
-        self
-    }
-    
-    var title: String {
-        rawValue.capitalized
-    }
-    
-    var systemImage: String {
-        switch self {
-        case .all:
-            "list.bullet"
-        case .favorites:
-            "heart"
-        }
-    }
-}
-
 @MainActor @Observable class AleTrailAppModel {
     let breweryService: BreweryService
     
     var breweries: [Brewery] = []
     var displayedPage: Int = 1
-    
-    var favoriteIDs: [String] = []
-    
-    var displayMode: ListDisplayMode = .all {
-        didSet {
-            switch displayMode {
-            case .all:
-                Task {
-                    try? await getBreweryList(initialFetch: true)
-                }
-            case .favorites:
-                Task {
-                    try? await getBreweriesByIDs(Array(favoriteIDs), initialFetch: true)
-                }
-            }
-        }
-    }
-    
+        
     init(breweryService: BreweryService) {
         self.breweryService = breweryService
-    }
-    
-    // TODO: - Don't like this
-    func setFavoriteIDs(ids: [String]) {
-        self.favoriteIDs = ids
     }
     
     private func updatePage(initialFetch: Bool) {
@@ -82,7 +33,7 @@ enum ListDisplayMode: String, Identifiable, CaseIterable {
         }
     }
     
-    func getBreweriesByIDs(_ ids: [String], initialFetch: Bool = false) async throws {
+    func getBreweriesByIDs(_ ids: [String], initialFetch: Bool = false) async throws(BreweryServiceError) {
         updatePage(initialFetch: initialFetch)
         
         var result: [Brewery]
@@ -102,13 +53,13 @@ enum ListDisplayMode: String, Identifiable, CaseIterable {
         updateBreweries(result: result, initialFetch: initialFetch)
     }
     
-    func getBreweryList(initialFetch: Bool) async throws {
+    func getBreweryList(initialFetch: Bool) async throws(BreweryServiceError) {
         updatePage(initialFetch: initialFetch)
         let result = try await breweryService.getBreweries(page: displayedPage)
         updateBreweries(result: result, initialFetch: initialFetch)
     }
     
-    func getBreweriesByCity(_ city: String, initialFetch: Bool) async throws {
+    func getBreweriesByCity(_ city: String, initialFetch: Bool) async throws(BreweryServiceError) {
         updatePage(initialFetch: initialFetch)
         let result = try await breweryService.getBreweries(byCity: city, page: displayedPage)
         updateBreweries(result: result, initialFetch: initialFetch)

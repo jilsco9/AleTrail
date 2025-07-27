@@ -8,43 +8,19 @@
 import SwiftData
 
 @Model final class Settings: Identifiable {
-    var ids: Set<String>
-    var displayMode: ListDisplayMode
+    var favoriteBreweryIDs: Set<String>
+    var breweryListDisplayMode: String
     
-    init(ids: Set<String>, listDisplayMode: ListDisplayMode = .all) {
-        self.ids = ids
-        self.displayMode = displayMode
+    init(ids: Set<String>, listDisplayMode: BreweryListDisplayMode = .all) {
+        self.favoriteBreweryIDs = ids
+        self.breweryListDisplayMode = listDisplayMode.rawValue
     }
     
     func removeFavorite(id: String) {
-        ids.remove(id)
+        favoriteBreweryIDs.remove(id)
     }
     
     func addFavorite(id: String) {
-        ids.insert(id)
+        favoriteBreweryIDs.insert(id)
     }
 }
-
-//@Model
-//final class FavoriteBrewery: Identifiable {
-//    var id: String
-//    var name: String
-//    var city: String?
-//    var stateProvince: String?
-//
-//    init(
-//        id: String,
-//        name: String,
-//        city: String? = nil,
-//        stateProvince: String? = nil
-//    ) {
-//        self.id = id
-//        self.name = name
-//        self.city = city
-//        self.stateProvince = stateProvince
-//    }
-//}
-
-// TODO: - ^ Setting up offline functionality, in case we want to
-// display favorite breweries without even doing a network call. Might
-// make sense to just save the whole Brewery model, though, actually.

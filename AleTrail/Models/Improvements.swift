@@ -1,0 +1,98 @@
+//
+//  Improvements.swift
+//  AleTrail
+//
+//  Created by Jillian Scott on 7/27/25.
+//
+
+import Foundation
+
+// TODO: - Move this file out... add notes to readme.
+
+/// *Settings - Offline model persistence*
+/// Currently only storing favorite model IDs.
+/// Depending on how we want the app to work, we could alternatively store
+/// an entire Brewery model. I opted for IDs only, to ensure we're getting fresh
+/// data from the server at each load
+///
+/// *Settings - Naming/Scope*
+/// The "Settings" model may be more of a catch-all than I'd prefer.
+/// I knew I wanted to hold onto favoriteIDs without the need for a separate
+/// API call (especially given that there's no "User" API or concept of
+/// an account in this app). I also decided that rather than always showing
+/// the ".all" mode of the BreweryList every time the app is opened, I wanted to
+/// just show whatever the most recent BreweryListDisplayMode the user had
+/// been employing. A single model seemed sufficient for persisting these two
+/// pieces of data. Thus, simply "Settings".
+///
+/// *VisitedIDs - Additional Feature*
+/// In addition to "FavoriteIDs" I thought it may be fun to have a similar set of
+/// "VistedIDs", where the user could indicate whether they've been to a particular
+/// brewery. That would also then be added to the BreweryListMode enum.
+///
+/// *Map - Additional Feature*
+/// It would be fun to show a map on the BreweryDetail screen. For a first pass
+/// this could show only on breweries with an included latitude/longitude, but it could
+/// also expand to use a street address, if provided.
+/// It may also be fun to have a "MyMap" feature, accessible from the
+/// .visited BreweryListMode mentioned above in "VisitedIDs". This would show
+/// a map with pins on all the breweries the user has marked as "visited".
+///
+/// *HopStop - Naming*
+/// I really wanted to name something "HopStop." Just because I think it would
+/// be very cute to refer to a brewery as a "Hop Stop" along the "Ale Trail."
+///
+/// *AleTrailAppModel - Naming/Scope*
+/// I don't love having an "AppModel" - a data aggregate model for the whole app,
+/// but I think the app's scope is small enough in this case to not split it up further.
+/// Ordinarily, I'd prefer a limited and logically distinct scope for a data aggregate model,
+/// which allows for thoughtful modularization of the app -- i.e., one where we can create
+/// modular groupings of service(s)/aggregate model(s)/data model(s)/view(s)
+///
+/// *Whole App - Folder/Naming/Organization Patterns*
+/// I've been experimenting with various project organization patterns I've run across
+/// recently. I like the idea of making a distinction between a "view" (basically, a child view
+/// or reusable component view) and a "screen" (a parent view on the navigation stack, like
+/// "BreweryList" or "BreweryDetail"). Apple has somewhat moved away from the convention
+/// of naming every view literally ending with View (e.g., BreweryListView), but I find it can
+/// make things harder to identify when looking at the file structure. Thus, I think I'm beginning
+/// to lean toward identifying screens with "Screen" and child views with
+/// "View" right there in the name. I digress...
+/// For the actual project directory, I don't love breaking up the project into broad strokes
+/// like "Models", "Networking", and "Views"... unless the scope is small enough. I think
+/// this is a case where it makes sense not to get too granular. However, if this project's
+/// scope were larger, I might tend toward groupings that tend more toward the modularity
+/// discussed above in "AleTrailAppModel - Naming/Scope". That's assuming the project
+/// is too small to warrant making *actual* modules. I think project organization largely
+/// goes by a "whatever makes sense" heuristic, unfortunately... and in this case,
+/// with the size of this app, I think the Models/Networking/Views distinction is the best route.
+///
+/// *BreweryServiceError, NetworkingError, AleTrailNetworking - Whole App - Error Definition and Handling*
+/// Implemented very limited error handling. Identifying valid response statuses would help
+/// give more specific error information. I included a pretty broad "other" category for
+/// NetworkingErrors in cases other than a URLError or DecodingError.
+/// I also leveraged LocalizedError to allow the platform
+/// to display the default alert, with an OK button. I would likely add more detailed error
+/// handling, with a title, message, and even retry actions (depending on the specific error).
+///
+/// *Source Control - Commits*
+/// I made a decision before starting work on this project that I would not be spending due attention
+/// to git/commit hygiene. Generally, I like to make my commits meaningful, with descriptive
+/// commit messages and small, logical, focused groups of changes. However, given the time
+/// constraint of this work, I knew sacrificing git organization would allow me to pursue other
+/// capabilities I wanted to demonstrate.
+///
+/// *Whole App - Documentation*
+/// I would love to include a DocC library to document more of the app. I love documentation.
+///
+/// *Whole App - Testing*
+/// One thing I did not set up was error testing -- creating the mock brewery service in such a
+/// way as to allow for returning an error. This could be accomplished simply by having a property
+/// that can be set within the test to define the return value or error. Alternatively, we could
+/// leverage a library that allows us to set up more robust expectation capabilities
+/// within our mocks.
+/// I could also expand testing to include snapshot testing.
+///
+/// *Whole App - Localization*
+///
+/// *Whole App - Accessibility*

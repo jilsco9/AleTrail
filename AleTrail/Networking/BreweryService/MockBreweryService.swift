@@ -9,7 +9,8 @@ import Foundation
 
 actor MockBreweryService: BreweryService {
     func getBreweries(byIDs ids: [String], page: Int) async throws(BreweryServiceError) -> [Brewery] {
-        return await Brewery.previewFavoritesList // TODO: - can actually return a .filter where ids.contains the brewery id
+//        return await Brewery.previewFavoritesList // TODO: - can actually return a .filter where ids.contains the brewery id
+        throw BreweryServiceError.networkingError(NetworkingError.urlError(URLError(.badURL)))
     }
     
     func getBreweries(page: Int) async throws(BreweryServiceError) -> [Brewery] {

@@ -7,10 +7,42 @@
 
 import Foundation
 
-enum NetworkingError: Error {
+enum NetworkingError: LocalizedError {
     
     case decodingError(DecodingError)
     case urlError(URLError)
-    // case failureStatus(statusCode: Int)
-    case other(Error) // TODO: distinct from other types of errors? or make this specific to our network status codes?
+    case other(Error)
+    
+    var errorDescription: String? {
+        switch self {
+        case .decodingError(let error):
+            return error.errorDescription
+        case .urlError(let error):
+            return error.localizedDescription
+        case .other(let error):
+            return error.localizedDescription
+        }
+    }
+    
+    var failureReason: String? {
+        switch self {
+        case .decodingError(let decodingError):
+            return decodingError.failureReason
+        case .urlError(let urlError):
+            return "Failed with code: \(urlError.code)"
+        case .other:
+            return "An unknown error occurred."
+        }
+    }
+    
+    var recoverySuggestion: String? {
+        switch self {
+        case .decodingError(let decodingError):
+            decodingError.recoverySuggestion
+        case .urlError:
+            nil
+        case .other:
+            "Please try again."
+        }
+    }
 }

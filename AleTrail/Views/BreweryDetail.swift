@@ -12,7 +12,7 @@ struct BreweryDetail: View {
     let userFavorites: Settings
     
     var isFavorite: Bool {
-        userFavorites.ids.contains(brewery.id)
+        userFavorites.favoriteBreweryIDs.contains(brewery.id)
     }
     
     var body: some View {
