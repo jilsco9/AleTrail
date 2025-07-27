@@ -11,14 +11,14 @@ struct BreweryListDisplayModeToolbarGroup: View {
     let favoriteBreweries: Settings
     
     var body: some View {
-        ToolbarItemGroup(placement: .bottomBar) {
+        
             GlassEffectContainer {
                 Button(BreweryListDisplayMode.all.title, systemImage: BreweryListDisplayMode.all.systemImage) {
                     withAnimation {
                         favoriteBreweries.breweryListDisplayMode = BreweryListDisplayMode.all.rawValue
                     }
                 }
-                .tint(favoriteBreweries.breweryListDisplayMode == BreweryListDisplayMode.all.rawValue ? .purple : .none)
+                .tint(favoriteBreweries.breweryListDisplayMode == BreweryListDisplayMode.all.rawValue ? .accent : .none)
                 .buttonStyle(.bordered)
                 
                 Button(BreweryListDisplayMode.favorites.title, systemImage: BreweryListDisplayMode.favorites.systemImage) {
@@ -27,14 +27,13 @@ struct BreweryListDisplayModeToolbarGroup: View {
                     }
                     
                 }
-                .tint(favoriteBreweries.breweryListDisplayMode == BreweryListDisplayMode.favorites.rawValue ? .purple : .none)
+                .tint(favoriteBreweries.breweryListDisplayMode == BreweryListDisplayMode.favorites.rawValue ? .accent : .none)
                 .buttonStyle(.bordered)
             }
             .controlSize(.large)
-        }
     }
 }
 
 #Preview {
-    BreweryListDisplayModeToolbarGroup()
+    BreweryListDisplayModeToolbarGroup(favoriteBreweries: .preview)
 }

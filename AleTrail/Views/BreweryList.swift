@@ -13,43 +13,62 @@ struct BreweryList: View {
     let settings: Settings
     
     @State var selectedBrewery: Brewery?
-    
-    @State var breweryServiceErrorIsPresented: Bool = false
-    @State var breweryServiceError: BreweryServiceError?
-    
-    func updateBreweryList(displayMode: String) async {
-        do {
-            switch settings.breweryListDisplayMode {
-            case BreweryListDisplayMode.all.rawValue:
-                try await appModel.getBreweryList(initialFetch: true)
-            case BreweryListDisplayMode.favorites.rawValue:
-                try await appModel.getBreweriesByIDs(Array(settings.favoriteBreweryIDs), initialFetch: true)
-            default:
-                // TODO: - handle as error?
-                debugPrint("Unexpected display mode type: \(settings.breweryListDisplayMode)")
-            }
-        } catch {
-            debugPrint("Error fetching brewery list: \(error)")
-            breweryServiceError = error
-            breweryServiceErrorIsPresented = true
+    @State var lastIDToInitiateLoad: String?
+        
+    func updateBreweryList(displayMode: String, initialFetch: Bool) async {
+        switch settings.breweryListDisplayMode {
+        case BreweryListDisplayMode.all.rawValue:
+            await appModel.getBreweryList(initialFetch: initialFetch)
+        case BreweryListDisplayMode.favorites.rawValue:
+            await appModel.getBreweriesByIDs(
+                Array(settings.favoriteBreweryIDs),
+                initialFetch: initialFetch
+            )
+        default:
+            // TODO: - handle as error?
+            debugPrint("Unexpected display mode type: \(settings.breweryListDisplayMode)")
         }
+        
+        lastIDToInitiateLoad = nil
     }
     
     var body: some View {
-        List(appModel.breweries) { brewery in
-            NavigationLink(brewery.name) {
-                BreweryDetail(
-                    brewery: brewery,
-                    userFavorites: settings
-                )
-            }
-        }
+        @Bindable var appModel = appModel
+                List(appModel.breweries) { brewery in
+                    NavigationLink(brewery.name) {
+                        BreweryDetail(
+                            brewery: brewery,
+                            userFavorites: settings
+                        )
+                    }
+                    .onScrollVisibilityChange(threshold: 0.5) { isVisible in
+                        if isVisible, brewery.id == appModel.lastLoadedBreweryID, brewery.id != lastIDToInitiateLoad {
+                            lastIDToInitiateLoad = brewery.id
+                            print("Last brewery ID is visible! \(brewery.id)")
+                            Task {
+                                await updateBreweryList(displayMode: settings.breweryListDisplayMode, initialFetch: false)
+                            }
+                        }
+                        
+                    }
+//                    .task {
+//                        guard !loading else { return }
+//                        if brewery.id == appModel.lastLoadedBreweryID {
+//                            await updateBreweryList(displayMode: settings.breweryListDisplayMode, initialFetch: false)
+//                        }
+//                    }
+                    
+                    if appModel.loading {
+                        ProgressView()
+                    }
+                }
+                
         .onChange(of: settings.breweryListDisplayMode, initial: true) {
             Task {
-                await updateBreweryList(displayMode: settings.breweryListDisplayMode)
+                await updateBreweryList(displayMode: settings.breweryListDisplayMode, initialFetch: true)
             }
         }
-        .alert(isPresented: $breweryServiceErrorIsPresented, error: breweryServiceError) {}
+        .alert(isPresented: $appModel.hasBreweryServiceError, error: appModel.breweryServiceError) {}
     }
 }
 

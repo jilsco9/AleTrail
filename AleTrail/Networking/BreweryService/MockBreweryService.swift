@@ -9,8 +9,7 @@ import Foundation
 
 actor MockBreweryService: BreweryService {
     func getBreweries(byIDs ids: [String], page: Int) async throws(BreweryServiceError) -> [Brewery] {
-//        return await Brewery.previewFavoritesList // TODO: - can actually return a .filter where ids.contains the brewery id
-        throw BreweryServiceError.networkingError(NetworkingError.urlError(URLError(.badURL)))
+        return await Brewery.previewList.filter { ids.contains($0.id) }
     }
     
     func getBreweries(page: Int) async throws(BreweryServiceError) -> [Brewery] {
@@ -18,6 +17,8 @@ actor MockBreweryService: BreweryService {
     }
     
     func getBreweries(byCity city: String, page: Int) async throws(BreweryServiceError) -> [Brewery] {
-        return await Brewery.previewSantaCruzList // TODO: - can actually return a .filter where city name equals entered city
+        return await Brewery.previewList.filter { brewery in
+            brewery.city?.lowercased().contains(city.lowercased()) ?? false
+        }
     }
 }

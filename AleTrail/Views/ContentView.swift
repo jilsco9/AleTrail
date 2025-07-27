@@ -8,16 +8,30 @@
 import SwiftUI
 import SwiftData
 
+//enum AppState {
+//    case loaded
+//    case creatingSettingsModel
+//    case performingInitialLoad
+//    
+//    var loadingMessage: String? {
+//        switch self {
+//        case .loaded:
+//            nil
+//        case .creatingSettingsModel:
+//            "Initializing app..."
+//        case .performingInitialLoad:
+//            "Fetching breweries..."
+//        }
+//    }
+//}
+
 struct ContentView: View {
     @Environment(AleTrailAppModel.self) private var appModel
     @Environment(\.modelContext) private var modelContext
     @Query private var settings: [Settings]
-    
+        
     func retrieveOrCreateFavoriteBreweries() {
-        if let _ = settings.first {
-            debugPrint("Found existing Settings model.")
-        } else {
-            debugPrint("No existing Settings model found. Creating one...")
+        if settings.first == nil {
             let newFavoriteBreweries = Settings(ids: [])
             modelContext.insert(newFavoriteBreweries)
         }
@@ -30,7 +44,9 @@ struct ContentView: View {
                     settings: favoriteBreweries
                 )
                 .toolbar {
-                    BreweryListDisplayModeToolbarGroup(favoriteBreweries: favoriteBreweries)
+                    ToolbarItemGroup(placement: .bottomBar) {
+                        BreweryListDisplayModeToolbarGroup(favoriteBreweries: favoriteBreweries)
+                    }
                 }
                 .navigationTitle("Breweries")
             } else {

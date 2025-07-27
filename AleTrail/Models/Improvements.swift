@@ -42,6 +42,14 @@ import Foundation
 /// I really wanted to name something "HopStop." Just because I think it would
 /// be very cute to refer to a brewery as a "Hop Stop" along the "Ale Trail."
 ///
+/// *BreweryList - Handling display state cases*
+/// It might be worthwhile to add a SettingsError, even if just for logging purposes.
+/// We are using the settings model to store and read the list display mode.
+/// This should only ever be one of the values from the BreweryListDisplayMode enum.
+/// We can handle this unexpected case by simply re-setting the display mode to
+/// one of our expected values; however, we may eventually want to let ourselves know
+/// that this unexpected value is manifesting somehow.
+///
 /// *AleTrailAppModel - Naming/Scope*
 /// I don't love having an "AppModel" - a data aggregate model for the whole app,
 /// but I think the app's scope is small enough in this case to not split it up further.
@@ -96,3 +104,25 @@ import Foundation
 /// *Whole App - Localization*
 ///
 /// *Whole App - Accessibility*
+///
+/// *Launch Screen - Appearance*
+/// I used a variant of the AccentColor to enter a LaunchScreen background color in the
+/// plist file. The plist isn't really an ideal way of customizing the LaunchScreen; if I were to
+/// continue to build out this app, I would either:
+/// - continue to use the plist and add light/dark color variants and an image, or
+/// - add a storyboard for the launch screen in order to have more control/customization capabilities
+///
+/// *App Icon - Appearance*
+/// I am no designer.
+///
+///
+/// CONSIDERATIONS
+///
+/// *BreweryServiceEndpoint*
+/// AleTrailAppModel, BreweryService, and BreweryServiceEndpoint treat the three available calls
+/// (getBreweriesByID, getBreweries, and getBreweriesByCity) as if they are, indeed, *separate*.
+/// However, they are not necessarily distinct endpoints. We could just as easily have a single endpoint
+/// that takes in optional values representing query items. However, reducing these into a single endpoint
+/// and single function on the service side limits our ability to effectively communicate what each
+/// method is doing. I prefered to treat them as separate functions for ease of use, and because
+/// another given API could format the endpoint(s) differently.

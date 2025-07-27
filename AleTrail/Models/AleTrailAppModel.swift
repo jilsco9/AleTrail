@@ -9,9 +9,13 @@ import Foundation
 
 @MainActor @Observable class AleTrailAppModel {
     let breweryService: BreweryService
-    
     var breweries: [Brewery] = []
-    var displayedPage: Int = 1
+    var allBreweriesHaveBeenLoaded: Bool = false
+    var loading: Bool = false
+    var breweryServiceError: BreweryServiceError?
+    var hasBreweryServiceError: Bool = false
+    var lastLoadedBreweryPage: Int = 1
+    var lastLoadedBreweryID: String?
         
     init(breweryService: BreweryService) {
         self.breweryService = breweryService
@@ -19,9 +23,9 @@ import Foundation
     
     private func updatePage(initialFetch: Bool) {
         if initialFetch {
-            displayedPage = 1
+            lastLoadedBreweryPage = 1
         } else {
-            displayedPage += 1
+            lastLoadedBreweryPage += 1
         }
     }
     
@@ -31,37 +35,89 @@ import Foundation
         } else {
             breweries.append(contentsOf: result)
         }
-    }
-    
-    func getBreweriesByIDs(_ ids: [String], initialFetch: Bool = false) async throws(BreweryServiceError) {
-        updatePage(initialFetch: initialFetch)
         
-        var result: [Brewery]
+        lastLoadedBreweryID = result.last?.id
         
-        // TODO: - Add note:
-        /// If ids is empty, simply set breweries to an empty list.
-        /// Otherwise, if the getBreweries call is made with an empty array,
-        /// the OpenBreweryDB API returns a list of breweries as if the call
-        /// was made without the `byIDs` query item.
-        // TODO: - May actually want to consider whether we want
-        // to catch that in the service itself.
-        if ids.isEmpty {
-            result = []
-        } else {
-            result = try await breweryService.getBreweries(byIDs: ids, page: displayedPage)
+        /// If there are no results, if there are fewer results than the max items per page,
+        /// or if we have come to a page with an empty array result, we have reached
+        /// the end of the results.
+        if result.count < BreweryServiceEndpoint.perPage {
+            allBreweriesHaveBeenLoaded = true
         }
-        updateBreweries(result: result, initialFetch: initialFetch)
     }
     
-    func getBreweryList(initialFetch: Bool) async throws(BreweryServiceError) {
+    func getBreweriesByIDs(_ ids: [String], initialFetch: Bool = false) async {
+        if initialFetch { allBreweriesHaveBeenLoaded = false }
+        
+        guard !allBreweriesHaveBeenLoaded else { return }
+        
+        loading = true
+        
         updatePage(initialFetch: initialFetch)
-        let result = try await breweryService.getBreweries(page: displayedPage)
-        updateBreweries(result: result, initialFetch: initialFetch)
+        
+        do {
+            var result: [Brewery]
+            
+            /// If ID array is empty to begin with, go ahead and set result to an empty array.
+            /// Note: If we allow the search to happen with an empty array, the current service,
+            /// OpenBreweryDB, proceeds with the search as if no ids query item was passed,
+            /// meaning it will give the first page of results for all breweries, which may not be
+            /// the functionality we expect. So it is best to set the result here in the app model
+            /// and head off any variation in behavior from the API.
+            if ids.isEmpty {
+                result = []
+            } else {
+                result = try await breweryService.getBreweries(byIDs: ids, page: lastLoadedBreweryPage)
+            }
+            updateBreweries(result: result, initialFetch: initialFetch)
+        } catch {
+            debugPrint("Error fetching brewery list by IDs: \(error.errorDescription ?? "BreweryServiceError")")
+            breweryServiceError = error
+            hasBreweryServiceError = true
+        }
+        
+        loading = false
     }
     
-    func getBreweriesByCity(_ city: String, initialFetch: Bool) async throws(BreweryServiceError) {
+    func getBreweryList(initialFetch: Bool) async {
+        if initialFetch { allBreweriesHaveBeenLoaded = false }
+        
+        guard !allBreweriesHaveBeenLoaded else { return }
+        
+        loading = true
+        
         updatePage(initialFetch: initialFetch)
-        let result = try await breweryService.getBreweries(byCity: city, page: displayedPage)
-        updateBreweries(result: result, initialFetch: initialFetch)
+        
+        do {
+            let result = try await breweryService.getBreweries(page: lastLoadedBreweryPage)
+            updateBreweries(result: result, initialFetch: initialFetch)
+        } catch {
+            debugPrint("Error fetching brewery list: \(error.errorDescription ?? "BreweryServiceError")")
+            breweryServiceError = error
+            hasBreweryServiceError = true
+        }
+        
+        loading = false
+    }
+    
+    func getBreweriesByCity(_ city: String, initialFetch: Bool) async {
+        if initialFetch { allBreweriesHaveBeenLoaded = false }
+        
+        guard !allBreweriesHaveBeenLoaded else { return }
+        
+        loading = true
+        
+        updatePage(initialFetch: initialFetch)
+        
+        do {
+            let result = try await breweryService.getBreweries(byCity: city, page: lastLoadedBreweryPage)
+            updateBreweries(result: result, initialFetch: initialFetch)
+        } catch {
+            debugPrint("Error fetching brewery list by city: \(error.errorDescription ?? "BreweryServiceError")")
+            breweryServiceError = error
+            hasBreweryServiceError = true
+        }
+        
+        loading = false
     }
 }
