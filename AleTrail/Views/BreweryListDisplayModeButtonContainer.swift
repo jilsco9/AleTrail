@@ -1,5 +1,5 @@
 //
-//  BreweryListDisplayModeToolbarGroup.swift
+//  BreweryListDisplayModeButtonContainer.swift
 //  AleTrail
 //
 //  Created by Jillian Scott on 7/27/25.

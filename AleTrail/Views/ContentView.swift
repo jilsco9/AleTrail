@@ -22,7 +22,7 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             if let loadedSettings = settings.first {
-                BreweryListDisplayNavigation(settings: loadedSettings)
+                BreweryListDisplayModeNavigation(settings: loadedSettings)
             } else {
                 ProgressView("Initializing app...")
             }

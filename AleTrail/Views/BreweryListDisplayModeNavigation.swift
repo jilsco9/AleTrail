@@ -1,5 +1,5 @@
 //
-//  BreweryNavigation.swift
+//  BreweryListDisplayModeNavigation.swift
 //  AleTrail
 //
 //  Created by Jillian Scott on 7/27/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct BreweryListDisplayNavigation: View {
+struct BreweryListDisplayModeNavigation: View {
     let settings: Settings
     
     var body: some View {
@@ -26,7 +26,7 @@ struct BreweryListDisplayNavigation: View {
 #Preview {
     @Previewable @State var appModel = AleTrailAppModel.preview
     NavigationStack {
-        BreweryListDisplayNavigation(settings: .preview)
+        BreweryListDisplayModeNavigation(settings: .preview)
     }
     .environment(appModel)
 }
