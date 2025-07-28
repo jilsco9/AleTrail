@@ -7,23 +7,6 @@
 
 import SwiftUI
 
-struct BreweryTypeView: View {
-    let breweryTypeTitle: String?
-    
-    var body: some View {
-        if let breweryType = BreweryType(rawValue: breweryTypeTitle ?? "") {
-            HStack {
-                Image(systemName: breweryType.systemImage)
-                    .font(.title)
-                    .foregroundStyle(.accent)
-                Divider()
-                Text(breweryType.title)
-                    .font(.headline)
-            }
-        }
-    }
-}
-
 struct BreweryDetail: View {
     let brewery: Brewery
     let settings: Settings
@@ -54,33 +37,33 @@ struct BreweryDetail: View {
         VStack {
             List {
                 VStack(alignment: .leading) {
-                    Text(brewery.name)
-                        .font(.largeTitle)
-                    
-                    HStack(spacing: 10) {
-                        ForEach(locationSummaryComponents, id: \.self) { component in
-                            Text(component)
-                            if component != locationSummaryComponents.last {
-                                Divider()
+                    VStack(alignment: .leading) {
+                        Text(brewery.name)
+                            .font(.largeTitle)
+                        
+                        HStack(spacing: 10) {
+                            ForEach(locationSummaryComponents, id: \.self) { component in
+                                Text(component)
+                                if component != locationSummaryComponents.last {
+                                    Divider()
+                                }
                             }
                         }
                     }
                     .font(.caption)
                     .padding(.bottom, 5)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityIdentifier(AccessibilityIdentifiers.BreweryDetail.generalInformation.id)
                     
                     Divider()
                         .padding(10)
                     
                     BreweryTypeView(breweryTypeTitle: brewery.breweryType)
-
-                }
-                
-                Section("General") {
-                    
+                        .accessibilityElement(children: .combine)
+                        .accessibility(AccessibilityIdentifiers.BreweryDetail.breweryType(brewery.breweryType ?? "Unknown"))
                 }
             }
         }
-//        .navigationTitle("Brewery Details")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button(
@@ -91,6 +74,7 @@ struct BreweryDetail: View {
                     }
                 )
                 .tint(.accent)
+                .accessibility(AccessibilityIdentifiers.BreweryDetail.favoriteButton(favorited: isFavorite))
             }
         }
     }

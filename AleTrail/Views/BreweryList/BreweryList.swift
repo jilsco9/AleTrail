@@ -41,6 +41,7 @@ struct BreweryList: View {
                     settings: settings
                 )
             }
+            .accessibility(AccessibilityIdentifiers.BreweryList.breweryListItem(id: brewery.id))
             .onScrollVisibilityChange(threshold: 0.5) { isVisible in
                 if isVisible, brewery.id == appModel.lastLoadedBreweryID, brewery.id != lastIDToInitiateLoad {
                     lastIDToInitiateLoad = brewery.id
@@ -51,9 +52,11 @@ struct BreweryList: View {
             }
             if appModel.loading {
                 ProgressView()
+                    .accessibility(AccessibilityIdentifiers.BreweryList.progressIndicator)
             }
         }
-        
+        .accessibilityElement(children: .contain)
+        .accessibility(AccessibilityIdentifiers.BreweryList.scrollView)
         .onChange(of: settings.breweryListDisplayMode, initial: true) {
             Task {
                 await updateBreweryList(displayMode: settings.breweryListDisplayMode, initialFetch: true)

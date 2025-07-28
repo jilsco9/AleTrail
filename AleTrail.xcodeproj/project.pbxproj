@@ -37,6 +37,14 @@
 			);
 			target = A1B781BD2E31BD5F0067EBE1 /* AleTrail */;
 		};
+		A11D76D92E37EF920046A0FA /* Exceptions for "AleTrail" folder in "AleTrailUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Views/BreweryDetail/AccessibilityIdentifiers+BreweryDetail.swift",
+				"Views/BreweryList/AccessibilityIdentifiers+BreweryList.swift",
+			);
+			target = A1B781D62E31BD610067EBE1 /* AleTrailUITests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -44,6 +52,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				A11D75D82E36A34D0046A0FA /* Exceptions for "AleTrail" folder in "AleTrail" target */,
+				A11D76D92E37EF920046A0FA /* Exceptions for "AleTrail" folder in "AleTrailUITests" target */,
 			);
 			path = AleTrail;
 			sourceTree = "<group>";

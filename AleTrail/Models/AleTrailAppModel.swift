@@ -54,7 +54,10 @@ import Foundation
     }
     
     func getBreweriesByIDs(_ ids: [String], initialFetch: Bool = false) async {
-        if initialFetch { allBreweriesHaveBeenLoaded = false }
+        if initialFetch {
+            allBreweriesHaveBeenLoaded = false
+            breweries = []
+        }
         
         guard !allBreweriesHaveBeenLoaded else { return }
         
@@ -87,7 +90,10 @@ import Foundation
     }
     
     func getBreweryList(initialFetch: Bool) async {
-        if initialFetch { allBreweriesHaveBeenLoaded = false }
+        if initialFetch {
+            allBreweriesHaveBeenLoaded = false
+            breweries = []
+        }
         
         guard !allBreweriesHaveBeenLoaded else { return }
         
@@ -108,7 +114,10 @@ import Foundation
     }
     
     func getBreweriesByCity(_ city: String, initialFetch: Bool) async {
-        if initialFetch { allBreweriesHaveBeenLoaded = false }
+        if initialFetch {
+            allBreweriesHaveBeenLoaded = false
+            breweries = []
+        }
         
         guard !allBreweriesHaveBeenLoaded else { return }
         

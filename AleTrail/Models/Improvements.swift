@@ -25,6 +25,11 @@ import Foundation
 /// been employing. A single model seemed sufficient for persisting these two
 /// pieces of data. Thus, simply "Settings".
 ///
+/// *BreweryList - Performance*
+/// If you scroll super fast, there can be some goofy behavior around lazy loading --
+/// view de-allocation/allocation & the progress indicator to load the next page of data.
+/// This could use some tightening up for speedy scrollers and quick connections.
+///
 /// *BreweryServiceEndpoint/BreweryService - Search*
 /// I included a "search" endpoint for fetching Breweries by city, but really
 /// the OpenBrewery API includes a true search endpoint, presumably
@@ -96,6 +101,17 @@ import Foundation
 /// to display the default alert, with an OK button. I would likely add more detailed error
 /// handling, with a title, message, and even retry actions (depending on the specific error).
 ///
+/// *AleTrailAppModel - Code Repetition*
+/// Some lines of code are unnecessarily repeated in the three networking calls. Ideally
+/// these can be extracted into their own function. I got caught up on naming, as taking
+/// the code as it is now, the method would have to prepare the model to fetch as well as
+/// return a Boolean determining whether the fetch should actually happen (i.e., if
+/// allBreweriesHaveBeenLoaded, we should not proceed with the attempted fetch). I like
+/// to have self-documenting method names so avoid unexpected side-effects, and
+/// "prepareForLoadingAndReturnShouldLoadingOccur" seems excessive and hints at
+/// too many responsibilities. So for now: I'm leaving the duplicate lines. With more time,
+/// I'd have a more elegant means of sharing a method that performs the model prep.
+///
 /// *BreweryServiceEndpoint - Naming*
 /// One endpoint is called "favorite", but it's not necessarily just for favorites. Perhaps to be more
 /// consistent with the data aggregate model and the brewery service, this should just be an ids
@@ -140,6 +156,10 @@ import Foundation
 /// I had to be fairly "creative" with SFSymbols to represent the brewery types. Custom
 /// symbols/assets would be ideal.
 ///
+/// *View+AccessibilityModifier - Modifers*
+/// Rather than having empty accessibilityLabels and accessibilityHints when none is defined,
+/// I'd like to make an OptionalModifier to simply leave those modifications off entirely.
+///
 ///
 /// CONSIDERATIONS
 ///
@@ -165,3 +185,4 @@ import Foundation
 /// to just use a toolbar with a little stylizing. I think it is a fitting choice anyway, as
 /// a toolbar is the recommended component in the Human Interface Guidelines when a button will perform
 /// some action (i.e., fetch new data) rather than display a distinct view.
+///

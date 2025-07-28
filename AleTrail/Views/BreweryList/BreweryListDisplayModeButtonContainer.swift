@@ -20,9 +20,25 @@ struct BreweryListDisplayModeButtonContainer: View {
                 }
                 .tint(settings.breweryListDisplayMode == mode.rawValue ? .accent : .none)
                 .buttonStyle(.bordered)
+                .accessibility(
+                    mode.getAccessibility(
+                        selected: settings.breweryListDisplayMode == mode.rawValue
+                    )
+                )
             }
         }
         .controlSize(.large)
+    }
+}
+
+fileprivate extension BreweryListDisplayMode {
+    func getAccessibility(selected: Bool) -> Accessibility {
+        switch self {
+        case .all:
+            AccessibilityIdentifiers.BreweryList.allBreweriesButton(selected: selected)
+        case .favorites:
+            AccessibilityIdentifiers.BreweryList.favoritesButton(selected: selected)
+        }
     }
 }
 
