@@ -121,6 +121,10 @@ import Foundation
 /// *App Icon - Appearance*
 /// I am no designer.
 ///
+/// *BreweryType - Icons*
+/// I had to be fairly "creative" with SFSymbols to represent the brewery types. Custom
+/// symbols/assets would be ideal.
+///
 ///
 /// CONSIDERATIONS
 ///
