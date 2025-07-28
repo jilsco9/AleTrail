@@ -25,6 +25,19 @@ import Foundation
 /// been employing. A single model seemed sufficient for persisting these two
 /// pieces of data. Thus, simply "Settings".
 ///
+/// *BreweryServiceEndpoint/BreweryService - Search*
+/// I included a "search" endpoint for fetching Breweries by city, but really
+/// the OpenBrewery API includes a true search endpoint, presumably
+/// to search various properties. For the limited scope of what I'm doing,
+/// however, I thought a good first step was using the same path and just
+/// searching city only. This should definitely be updated and expanded upon
+/// if this app were to be further developed -- the city query item could be used
+/// as a tappable item on the brewery detail screen, to view other breweries in
+/// the same city. Or, the app could display a list of cities or allow for a city search,
+/// where tapping the city itself in the list brings you to a list of all breweries in
+/// that city. In that way, "search" (../breweries/search?query=carmel...) would be distinct
+/// from "by city" (../breweries?by_city=carmel...)
+///
 /// *VisitedIDs - Additional Feature*
 /// In addition to "FavoriteIDs" I thought it may be fun to have a similar set of
 /// "VistedIDs", where the user could indicate whether they've been to a particular
@@ -98,6 +111,8 @@ import Foundation
 ///
 /// *Whole App - Documentation*
 /// I would love to include a DocC library to document more of the app. I love documentation.
+/// I included some minimal symbol documentation in the code, but with no time limitations,
+/// I could expand that further.
 ///
 /// *Whole App - Testing*
 /// One thing I did not set up was error testing -- creating the mock brewery service in such a
@@ -119,7 +134,7 @@ import Foundation
 /// - add a storyboard for the launch screen in order to have more control/customization capabilities
 ///
 /// *App Icon - Appearance*
-/// I am no designer.
+/// I am certainly no designer. It's supposed to be two steins in front of a map...
 ///
 /// *BreweryType - Icons*
 /// I had to be fairly "creative" with SFSymbols to represent the brewery types. Custom

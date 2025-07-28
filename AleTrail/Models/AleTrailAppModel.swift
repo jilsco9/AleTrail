@@ -7,6 +7,13 @@
 
 import Foundation
 
+/// The main data model for the app
+///
+/// Interacts with the BreweryService to get breweries -- paginated lists of either the full list of
+/// breweries, a list of breweries by ID, or a list of breweries by city.
+///
+/// Keeps track of errors thrown from the service and current loading state. Also keeps track
+/// of the pagination information for fetching breweries.
 @MainActor @Observable class AleTrailAppModel {
     let breweryService: BreweryService
     var breweries: [Brewery] = []

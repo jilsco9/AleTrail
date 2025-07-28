@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Extension that hold sample data for previews
 extension Settings {
     static var preview: Settings = {
         Settings(

@@ -7,6 +7,10 @@
 
 import SwiftData
 
+/// Persistent settings model
+///
+/// Persists user settings such as brewery IDs marked as favorites
+/// and last viewed brewery list display mode
 @Model final class Settings: Identifiable {
     var favoriteBreweryIDs: Set<String>
     var breweryListDisplayMode: String

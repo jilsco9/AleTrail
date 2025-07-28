@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Extension that hold sample data for previews
 extension AleTrailAppModel {
     static var preview: AleTrailAppModel = {
        AleTrailAppModel(breweryService: MockBreweryService())

@@ -7,6 +7,8 @@
 
 import Foundation
 
+/// Type of brewery
+///
 /// Descriptions from https://www.openbrewerydb.org/documentation#list-breweries
 enum BreweryType: String {
     case micro

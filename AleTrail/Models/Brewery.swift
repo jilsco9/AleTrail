@@ -7,6 +7,9 @@
 
 import Foundation
 
+/// Brewery model - Primary data response model for the app
+///
+/// Contains name, brewery type, contact information, and location information
 struct Brewery: Codable, Identifiable, Hashable {
     let id: String
     let name: String
