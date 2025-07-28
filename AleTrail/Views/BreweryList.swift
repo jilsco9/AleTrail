@@ -14,7 +14,7 @@ struct BreweryList: View {
     
     @State var selectedBrewery: Brewery?
     @State var lastIDToInitiateLoad: String?
-        
+    
     func updateBreweryList(displayMode: String, initialFetch: Bool) async {
         switch settings.breweryListDisplayMode {
         case BreweryListDisplayMode.all.rawValue:
@@ -25,8 +25,8 @@ struct BreweryList: View {
                 initialFetch: initialFetch
             )
         default:
-            // TODO: - handle as error?
-            debugPrint("Unexpected display mode type: \(settings.breweryListDisplayMode)")
+            debugPrint("Unexpected display mode type: \(settings.breweryListDisplayMode). Resetting display mode to all.")
+            settings.breweryListDisplayMode = BreweryListDisplayMode.all.rawValue
         }
         
         lastIDToInitiateLoad = nil
@@ -34,35 +34,26 @@ struct BreweryList: View {
     
     var body: some View {
         @Bindable var appModel = appModel
-                List(appModel.breweries) { brewery in
-                    NavigationLink(brewery.name) {
-                        BreweryDetail(
-                            brewery: brewery,
-                            userFavorites: settings
-                        )
-                    }
-                    .onScrollVisibilityChange(threshold: 0.5) { isVisible in
-                        if isVisible, brewery.id == appModel.lastLoadedBreweryID, brewery.id != lastIDToInitiateLoad {
-                            lastIDToInitiateLoad = brewery.id
-                            print("Last brewery ID is visible! \(brewery.id)")
-                            Task {
-                                await updateBreweryList(displayMode: settings.breweryListDisplayMode, initialFetch: false)
-                            }
-                        }
-                        
-                    }
-//                    .task {
-//                        guard !loading else { return }
-//                        if brewery.id == appModel.lastLoadedBreweryID {
-//                            await updateBreweryList(displayMode: settings.breweryListDisplayMode, initialFetch: false)
-//                        }
-//                    }
-                    
-                    if appModel.loading {
-                        ProgressView()
+        List(appModel.breweries) { brewery in
+            NavigationLink(brewery.name) {
+                BreweryDetail(
+                    brewery: brewery,
+                    settings: settings
+                )
+            }
+            .onScrollVisibilityChange(threshold: 0.5) { isVisible in
+                if isVisible, brewery.id == appModel.lastLoadedBreweryID, brewery.id != lastIDToInitiateLoad {
+                    lastIDToInitiateLoad = brewery.id
+                    Task {
+                        await updateBreweryList(displayMode: settings.breweryListDisplayMode, initialFetch: false)
                     }
                 }
-                
+            }
+            if appModel.loading {
+                ProgressView()
+            }
+        }
+        
         .onChange(of: settings.breweryListDisplayMode, initial: true) {
             Task {
                 await updateBreweryList(displayMode: settings.breweryListDisplayMode, initialFetch: true)

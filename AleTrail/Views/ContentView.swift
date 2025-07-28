@@ -8,60 +8,33 @@
 import SwiftUI
 import SwiftData
 
-//enum AppState {
-//    case loaded
-//    case creatingSettingsModel
-//    case performingInitialLoad
-//    
-//    var loadingMessage: String? {
-//        switch self {
-//        case .loaded:
-//            nil
-//        case .creatingSettingsModel:
-//            "Initializing app..."
-//        case .performingInitialLoad:
-//            "Fetching breweries..."
-//        }
-//    }
-//}
-
 struct ContentView: View {
-    @Environment(AleTrailAppModel.self) private var appModel
     @Environment(\.modelContext) private var modelContext
     @Query private var settings: [Settings]
         
-    func retrieveOrCreateFavoriteBreweries() {
+    func createSettingsIfNeeded() {
         if settings.first == nil {
-            let newFavoriteBreweries = Settings(ids: [])
+            let newFavoriteBreweries = Settings(favoriteBreweryIDs: [])
             modelContext.insert(newFavoriteBreweries)
         }
     }
     
     var body: some View {
         NavigationStack {
-            if let favoriteBreweries = settings.first {
-                BreweryList(
-                    settings: favoriteBreweries
-                )
-                .toolbar {
-                    ToolbarItemGroup(placement: .bottomBar) {
-                        BreweryListDisplayModeToolbarGroup(favoriteBreweries: favoriteBreweries)
-                    }
-                }
-                .navigationTitle("Breweries")
+            if let loadedSettings = settings.first {
+                BreweryListDisplayNavigation(settings: loadedSettings)
             } else {
-                // TODO: - Update...
-                ProgressView("Loading app...")
+                ProgressView("Initializing app...")
             }
         }
         .onAppear {
-            retrieveOrCreateFavoriteBreweries()
+            createSettingsIfNeeded()
         }
     }
 }
 
 #Preview {
-    @Previewable @State var appModel = AleTrailAppModel(breweryService: MockBreweryService())
+    @Previewable @State var appModel = AleTrailAppModel.preview
     ContentView()
         .modelContainer(for: Settings.self, inMemory: true)
         .environment(appModel)

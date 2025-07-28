@@ -13,7 +13,7 @@ import Foundation
 /// Currently only storing favorite model IDs.
 /// Depending on how we want the app to work, we could alternatively store
 /// an entire Brewery model. I opted for IDs only, to ensure we're getting fresh
-/// data from the server at each load
+/// data from the server at each load.
 ///
 /// *Settings - Naming/Scope*
 /// The "Settings" model may be more of a catch-all than I'd prefer.
@@ -83,6 +83,12 @@ import Foundation
 /// to display the default alert, with an OK button. I would likely add more detailed error
 /// handling, with a title, message, and even retry actions (depending on the specific error).
 ///
+/// *BreweryServiceEndpoint - Naming*
+/// One endpoint is called "favorite", but it's not necessarily just for favorites. Perhaps to be more
+/// consistent with the data aggregate model and the brewery service, this should just be an ids
+/// endpoint. Or maybe this should simply be a struct shared by all three of the current "endpoints".
+/// See Considerations -> BreweryServiceEndpoint
+///
 /// *Source Control - Commits*
 /// I made a decision before starting work on this project that I would not be spending due attention
 /// to git/commit hygiene. Generally, I like to make my commits meaningful, with descriptive
@@ -126,3 +132,17 @@ import Foundation
 /// and single function on the service side limits our ability to effectively communicate what each
 /// method is doing. I prefered to treat them as separate functions for ease of use, and because
 /// another given API could format the endpoint(s) differently.
+///
+/// *ContentView, BreweryList - Toolbar*
+/// Initially, I really wanted to use the native TabView component, mostly just because I like
+/// the way it looks with LiquidGlass. It also comes with built-in selection state. However,
+/// as I began building it, it became clear that structuring the architecture with separate
+/// list views (to occupy the Tabs) did not make much sense, as the lists are all based on
+/// a brewery array. It made more sense to just update the brewery array and allow the list to
+/// update in response. Unfortunately, the only way to leverage the TabView selection
+/// component with that architecture would have been to create "invisible" tab view content
+/// on the screen. It felt a little too hacky, and depending on how it's implemented, it could have
+/// negative impacts on the screen's accessibility (e.g., on screen reader). In short: I decided
+/// to just use a toolbar with a little stylizing. I think it is a fitting choice anyway, as
+/// a toolbar is the recommended component in the Human Interface Guidelines when a button will perform
+/// some action (i.e., fetch new data) rather than display a distinct view.

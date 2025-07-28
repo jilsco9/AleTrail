@@ -23,7 +23,7 @@ enum BreweryServiceError: LocalizedError {
     var failureReason: String? {
         switch self {
         case .invalidEndpoint:
-            "Invalid endpoint"
+            "Could not construct a valid URL with the given path."
         case .networkingError(let networkingError):
             networkingError.failureReason
         }

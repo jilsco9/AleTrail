@@ -11,8 +11,8 @@ import SwiftData
     var favoriteBreweryIDs: Set<String>
     var breweryListDisplayMode: String
     
-    init(ids: Set<String>, listDisplayMode: BreweryListDisplayMode = .all) {
-        self.favoriteBreweryIDs = ids
+    init(favoriteBreweryIDs: Set<String>, listDisplayMode: BreweryListDisplayMode = .all) {
+        self.favoriteBreweryIDs = favoriteBreweryIDs
         self.breweryListDisplayMode = listDisplayMode.rawValue
     }
     

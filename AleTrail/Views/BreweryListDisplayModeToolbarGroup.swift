@@ -7,33 +7,32 @@
 
 import SwiftUI
 
-struct BreweryListDisplayModeToolbarGroup: View {
-    let favoriteBreweries: Settings
+struct BreweryListDisplayModeButtonContainer: View {
+    let settings: Settings
     
     var body: some View {
-        
-            GlassEffectContainer {
-                Button(BreweryListDisplayMode.all.title, systemImage: BreweryListDisplayMode.all.systemImage) {
+        GlassEffectContainer {
+            ForEach(BreweryListDisplayMode.allCases) { mode in
+                Button(mode.title, systemImage: mode.systemImage) {
                     withAnimation {
-                        favoriteBreweries.breweryListDisplayMode = BreweryListDisplayMode.all.rawValue
+                        settings.breweryListDisplayMode = mode.rawValue
                     }
                 }
-                .tint(favoriteBreweries.breweryListDisplayMode == BreweryListDisplayMode.all.rawValue ? .accent : .none)
-                .buttonStyle(.bordered)
-                
-                Button(BreweryListDisplayMode.favorites.title, systemImage: BreweryListDisplayMode.favorites.systemImage) {
-                    withAnimation {
-                        favoriteBreweries.breweryListDisplayMode = BreweryListDisplayMode.favorites.rawValue
-                    }
-                    
-                }
-                .tint(favoriteBreweries.breweryListDisplayMode == BreweryListDisplayMode.favorites.rawValue ? .accent : .none)
+                .tint(settings.breweryListDisplayMode == mode.rawValue ? .accent : .none)
                 .buttonStyle(.bordered)
             }
-            .controlSize(.large)
+        }
+        .controlSize(.large)
     }
 }
 
 #Preview {
-    BreweryListDisplayModeToolbarGroup(favoriteBreweries: .preview)
+    NavigationStack {
+        Text("")
+            .toolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    BreweryListDisplayModeButtonContainer(settings: .preview)
+                }
+            }
+    }
 }

@@ -9,6 +9,10 @@ import Foundation
 
 extension Settings {
     static var preview: Settings = {
-        Settings(ids: Set<String>(Brewery.previewFavoritesList.map { $0.id }))
+        Settings(
+            favoriteBreweryIDs: Set<String>(
+                Brewery.previewFavoritesList.map { $0.id }
+            )
+        )
     }()
 }

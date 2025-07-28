@@ -10,7 +10,7 @@ import Foundation
 actor AleTrailNetworking {
     func sendGetRequest<T: Decodable>(to url: URL, type: T.Type = T.self) async throws(NetworkingError) -> T {
         do {
-            let (data, response) = try await URLSession.shared.data(from: url)
+            let (data, _) = try await URLSession.shared.data(from: url)
             let decodedResponse = try JSONDecoder().decode(T.self, from: data)
             return decodedResponse
         } catch let error as DecodingError {

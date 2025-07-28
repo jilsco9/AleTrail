@@ -26,13 +26,6 @@ extension Brewery {
         ]
     }
     
-    static var previewSantaCruzList: [Brewery] {
-        [
-            previewEastCliff,
-            previewHumbleSea
-        ]
-    }
-    
     static var previewUnion: Brewery = {
         Brewery(
             id: "6f07acc5-3db8-4380-b30f-98d256184c56",

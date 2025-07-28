@@ -9,10 +9,10 @@ import SwiftUI
 
 struct BreweryDetail: View {
     let brewery: Brewery
-    let userFavorites: Settings
+    let settings: Settings
     
     var isFavorite: Bool {
-        userFavorites.favoriteBreweryIDs.contains(brewery.id)
+        settings.favoriteBreweryIDs.contains(brewery.id)
     }
     
     var body: some View {
@@ -23,7 +23,7 @@ struct BreweryDetail: View {
                         isFavorite ? "Remove Favorite" : "Add Favorite",
                         systemImage: isFavorite ? "heart.fill" : "heart",
                         action: {
-                            isFavorite ? userFavorites.removeFavorite(id: brewery.id) : userFavorites.addFavorite(id: brewery.id)
+                            isFavorite ? settings.removeFavorite(id: brewery.id) : settings.addFavorite(id: brewery.id)
                         }
                     )
                 }
@@ -32,12 +32,10 @@ struct BreweryDetail: View {
 }
 
 #Preview {
-    @Previewable @State var appModel = AleTrailAppModel.preview
     NavigationStack {
         BreweryDetail(
             brewery: Brewery.previewUnion,
-            userFavorites: Settings.preview
+            settings: Settings.preview
         )
     }
-    .environment(appModel)
 }
