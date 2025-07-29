@@ -17,6 +17,7 @@ protocol BreweryService {
         page: Int
     ) async throws(BreweryServiceError) -> [Brewery]
     
+    // Note: Funcitonality cut for scope
     func getBreweries(
         byCity city: String,
         page: Int

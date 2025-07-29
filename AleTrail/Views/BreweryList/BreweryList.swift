@@ -57,6 +57,20 @@ struct BreweryList: View {
         }
         .accessibilityElement(children: .contain)
         .accessibility(AccessibilityIdentifiers.BreweryList.scrollView)
+        .overlay {
+            if !appModel.loading,
+                appModel.allBreweriesHaveBeenLoaded,
+                appModel.breweries.isEmpty,
+               let displayMode = BreweryListDisplayMode(rawValue: settings.breweryListDisplayMode) {
+                    ContentUnavailableView {
+                        Label("No Breweries", systemImage: displayMode.systemImage)
+                    } description: {
+                        Text(displayMode.noResultsMessage)
+                    }
+                    .accessibilityElement(children: .contain)
+                    .accessibility(AccessibilityIdentifiers.BreweryList.noBreweriesView)
+                }
+        }
         .onChange(of: settings.breweryListDisplayMode, initial: true) {
             Task {
                 await updateBreweryList(displayMode: settings.breweryListDisplayMode, initialFetch: true)

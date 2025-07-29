@@ -10,6 +10,7 @@ import Foundation
 enum BreweryServiceQueryItem {
     case perPage(Int)
     case page(Int)
+    // Note: Funcitonality cut for scope
     case city(String)
     case ids([String])
     

@@ -15,6 +15,7 @@ extension AccessibilityIdentifiers {
         case navigationTitle
         case progressIndicator
         case breweryListItem(id: String)
+        case noBreweriesView
         
         var screenID: String {
             "BreweryList"
@@ -34,6 +35,8 @@ extension AccessibilityIdentifiers {
                 "progressIndicator"
             case .breweryListItem(let id):
                 "breweryListItem.\(id)"
+            case .noBreweriesView:
+                "noBreweriesView"
             }
         }
         
@@ -46,7 +49,8 @@ extension AccessibilityIdentifiers {
             case .scrollView,
                     .navigationTitle,
                     .progressIndicator,
-                    .breweryListItem:
+                    .breweryListItem,
+                    .noBreweriesView:
                 return nil
             }
         }
@@ -60,7 +64,8 @@ extension AccessibilityIdentifiers {
             case .scrollView,
                     .navigationTitle,
                     .progressIndicator,
-                    .breweryListItem:
+                    .breweryListItem,
+                    .noBreweriesView:
                 return nil
             }
         }

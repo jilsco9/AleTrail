@@ -8,7 +8,7 @@
 import Foundation
 
 // TODO: - Move this file out... add notes to readme.
-
+///
 /// *Settings - Offline model persistence*
 /// Currently only storing favorite model IDs.
 /// Depending on how we want the app to work, we could alternatively store
@@ -30,16 +30,15 @@ import Foundation
 /// view de-allocation/allocation & the progress indicator to load the next page of data.
 /// This could use some tightening up for speedy scrollers and quick connections.
 ///
-/// *BreweryServiceEndpoint/BreweryService - Search*
-/// I included a "search" endpoint for fetching Breweries by city, but really
+/// *BreweryServiceEndpoint/BreweryService - Search and ByCity*
+/// I originally included a "search" endpoint for fetching Breweries by city, but really
 /// the OpenBrewery API includes a true search endpoint, presumably
-/// to search various properties. For the limited scope of what I'm doing,
-/// however, I thought a good first step was using the same path and just
-/// searching city only. This should definitely be updated and expanded upon
-/// if this app were to be further developed -- the city query item could be used
-/// as a tappable item on the brewery detail screen, to view other breweries in
-/// the same city. Or, the app could display a list of cities or allow for a city search,
-/// where tapping the city itself in the list brings you to a list of all breweries in
+/// to search various properties. Ultimately, given more time, I would have liked to
+/// include both "search" and "fetch by city" capabilities -- the city query item could be used
+/// to show a tappable item on the brewery detail screen that allows the user
+/// to view other breweries in the same city. Or, the app could display a list
+/// of cities or allow for a city search, where tapping the city itself in the list brings
+/// the user to a list of all breweries in
 /// that city. In that way, "search" (../breweries/search?query=carmel...) would be distinct
 /// from "by city" (../breweries?by_city=carmel...)
 ///
@@ -137,6 +136,8 @@ import Foundation
 /// leverage a library that allows us to set up more robust expectation capabilities
 /// within our mocks.
 /// I could also expand testing to include snapshot testing.
+/// I wanted to include lazy loading in my testing, but time was too short to
+/// do this effectively.
 ///
 /// *Whole App - Localization*
 ///
@@ -159,6 +160,13 @@ import Foundation
 /// *View+AccessibilityModifier - Modifers*
 /// Rather than having empty accessibilityLabels and accessibilityHints when none is defined,
 /// I'd like to make an OptionalModifier to simply leave those modifications off entirely.
+///
+/// *AleTrailUITests - Identifiers*
+/// I could leverage our existing accessibility identifiers for the UI tests, i.e., either by creating
+/// a struct/enum with identifiers for each given screen or by simply adding the accessibility identifier
+/// files from the main app target to the UITest target as well. For now, though, I'm just going to use
+/// string literals so as not to overdo dynamic string creation and instead create very explicit expectations
+/// against which to test.
 ///
 ///
 /// CONSIDERATIONS

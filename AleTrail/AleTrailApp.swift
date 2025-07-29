@@ -14,8 +14,13 @@ struct AleTrailApp: App {
         let schema = Schema([
             Settings.self,
         ])
+        
+#if TESTING
+        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
+#else
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
+#endif
+        
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {
@@ -24,9 +29,13 @@ struct AleTrailApp: App {
     }()
     
     @State var appModel: AleTrailAppModel = {
-        AleTrailAppModel(breweryService: AleTrailBreweryService())
+#if TESTING
+        return AleTrailAppModel(breweryService: MockBreweryService())
+#else
+        return AleTrailAppModel(breweryService: AleTrailBreweryService())
+#endif
     }()
-
+    
     var body: some Scene {
         WindowGroup {
             ContentView()

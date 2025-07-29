@@ -1,0 +1,38 @@
+{
+  "configurations" : [
+    {
+      "id" : "294958A0-A90B-4804-B7FF-F8D222129C0B",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "performanceAntipatternCheckerEnabled" : true,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:AleTrail.xcodeproj",
+      "identifier" : "A1B781BD2E31BD5F0067EBE1",
+      "name" : "AleTrail"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:AleTrail.xcodeproj",
+        "identifier" : "A1B781CC2E31BD610067EBE1",
+        "name" : "AleTrailTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:AleTrail.xcodeproj",
+        "identifier" : "A1B781D62E31BD610067EBE1",
+        "name" : "AleTrailUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

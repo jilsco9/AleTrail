@@ -16,6 +16,7 @@ actor MockBreweryService: BreweryService {
         return await Brewery.previewList
     }
     
+    // Note: Funcitonality cut for scope
     func getBreweries(byCity city: String, page: Int) async throws(BreweryServiceError) -> [Brewery] {
         return await Brewery.previewList.filter { brewery in
             brewery.city?.lowercased().contains(city.lowercased()) ?? false

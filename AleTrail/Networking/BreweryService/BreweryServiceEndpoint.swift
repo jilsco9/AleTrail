@@ -12,6 +12,7 @@ enum BreweryServiceEndpoint {
     static let perPage: Int = 50
     
     case list(page: Int)
+    // Note: Funcitonality cut for scope
     case search(city: String, page: Int)
     case favorites(ids: [String], page: Int)
     
@@ -22,6 +23,7 @@ enum BreweryServiceEndpoint {
                 BreweryServiceQueryItem.page(page).queryItem,
                 BreweryServiceQueryItem.perPage(Self.perPage).queryItem
             ]
+        // Note: Funcitonality cut for scope
         case .search(let city, let page):
             [
                 BreweryServiceQueryItem.city(city).queryItem,

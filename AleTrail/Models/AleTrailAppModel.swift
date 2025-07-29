@@ -18,7 +18,7 @@ import Foundation
     let breweryService: BreweryService
     var breweries: [Brewery] = []
     var allBreweriesHaveBeenLoaded: Bool = false
-    var loading: Bool = false
+    var loading: Bool = true
     var breweryServiceError: BreweryServiceError?
     var hasBreweryServiceError: Bool = false
     var lastLoadedBreweryPage: Int = 1
@@ -53,42 +53,6 @@ import Foundation
         }
     }
     
-    func getBreweriesByIDs(_ ids: [String], initialFetch: Bool = false) async {
-        if initialFetch {
-            allBreweriesHaveBeenLoaded = false
-            breweries = []
-        }
-        
-        guard !allBreweriesHaveBeenLoaded else { return }
-        
-        loading = true
-        
-        updatePage(initialFetch: initialFetch)
-        
-        do {
-            var result: [Brewery]
-            
-            /// If ID array is empty to begin with, go ahead and set result to an empty array.
-            /// Note: If we allow the search to happen with an empty array, the current service,
-            /// OpenBreweryDB, proceeds with the search as if no ids query item was passed,
-            /// meaning it will give the first page of results for all breweries, which may not be
-            /// the functionality we expect. So it is best to set the result here in the app model
-            /// and head off any variation in behavior from the API.
-            if ids.isEmpty {
-                result = []
-            } else {
-                result = try await breweryService.getBreweries(byIDs: ids, page: lastLoadedBreweryPage)
-            }
-            updateBreweries(result: result, initialFetch: initialFetch)
-        } catch {
-            debugPrint("Error fetching brewery list by IDs: \(error.errorDescription ?? "BreweryServiceError")")
-            breweryServiceError = error
-            hasBreweryServiceError = true
-        }
-        
-        loading = false
-    }
-    
     func getBreweryList(initialFetch: Bool) async {
         if initialFetch {
             allBreweriesHaveBeenLoaded = false
@@ -113,7 +77,7 @@ import Foundation
         loading = false
     }
     
-    func getBreweriesByCity(_ city: String, initialFetch: Bool) async {
+    func getBreweriesByIDs(_ ids: [String], initialFetch: Bool = false) async {
         if initialFetch {
             allBreweriesHaveBeenLoaded = false
             breweries = []
@@ -126,10 +90,22 @@ import Foundation
         updatePage(initialFetch: initialFetch)
         
         do {
-            let result = try await breweryService.getBreweries(byCity: city, page: lastLoadedBreweryPage)
+            var result: [Brewery]
+            
+            /// If ID array is empty to begin with, go ahead and set result to an empty array.
+            /// Note: If we allow the fetch by IDs to happen with an empty array, the current service,
+            /// OpenBreweryDB, proceeds with the fetch as if no ids query item was passed,
+            /// meaning it will give the first page of results for all breweries, which may not be
+            /// the functionality we expect. So it is best to set the result here in the app model
+            /// and head off any variation in behavior from the API.
+            if ids.isEmpty {
+                result = []
+            } else {
+                result = try await breweryService.getBreweries(byIDs: ids, page: lastLoadedBreweryPage)
+            }
             updateBreweries(result: result, initialFetch: initialFetch)
         } catch {
-            debugPrint("Error fetching brewery list by city: \(error.errorDescription ?? "BreweryServiceError")")
+            debugPrint("Error fetching brewery list by IDs: \(error.errorDescription ?? "BreweryServiceError")")
             breweryServiceError = error
             hasBreweryServiceError = true
         }
