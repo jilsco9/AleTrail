@@ -35,25 +35,42 @@ struct BreweryList: View {
     
     var body: some View {
         @Bindable var appModel = appModel
-        List(appModel.breweries) { brewery in
-            NavigationLink(brewery.name) {
-                BreweryDetail(
-                    brewery: brewery,
-                    settings: settings
-                )
-            }
-            .accessibility(AccessibilityIdentifiers.BreweryList.breweryListItem(id: brewery.id))
-            .onScrollVisibilityChange(threshold: 0.5) { isVisible in
-                if isVisible, brewery.id == appModel.lastLoadedBreweryID, brewery.id != lastIDToInitiateLoad {
-                    lastIDToInitiateLoad = brewery.id
-                    Task {
-                        await updateBreweryList(displayMode: settings.breweryListDisplayMode, initialFetch: false)
+        List {
+            ForEach(appModel.breweries) { brewery in
+                NavigationLink(brewery.name) {
+                    BreweryDetail(
+                        brewery: brewery,
+                        settings: settings
+                    )
+                }
+                .accessibility(AccessibilityIdentifiers.BreweryList.breweryListItem(id: brewery.id))
+                .onScrollVisibilityChange(threshold: 0.5) { isVisible in
+                    if isVisible, brewery.id == appModel.lastLoadedBreweryID, brewery.id != lastIDToInitiateLoad {
+                        lastIDToInitiateLoad = brewery.id
+                        Task {
+                            await updateBreweryList(displayMode: settings.breweryListDisplayMode, initialFetch: false)
+                        }
                     }
                 }
             }
+            
+            
             if appModel.loading {
                 ProgressView()
                     .accessibility(AccessibilityIdentifiers.BreweryList.progressIndicator)
+            } else if appModel.hasErrorOnPageLoad {
+                VStack {
+                    Text("An error occurred loading more breweries.")
+                    Button("Try again") {
+                        Task {
+                            // TODO: - this is logic that I'd like to move to model, but I don't want to introduce
+                            // another arg. But maybe loadingInitiationType (initialFetch/nextPage/loadRetry?)
+                            // to differentiate?
+                            appModel.allBreweriesHaveBeenLoaded = false
+                            await updateBreweryList(displayMode: settings.breweryListDisplayMode, initialFetch: false)
+                        }
+                    }
+                }
             }
         }
         .accessibilityElement(children: .contain)

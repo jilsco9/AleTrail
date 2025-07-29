@@ -68,10 +68,14 @@ struct BreweryDetail: View {
                 
                 Section("Location") {
                     BreweryLocationView(brewery: brewery)
+                        .accessibilityElement(children: .combine)
+                        .accessibilityIdentifier(AccessibilityIdentifiers.BreweryDetail.locationInformation.id)
                 }
                 
                 Section("Contact") {
                     BreweryContactView(brewery: brewery)
+                        .accessibilityElement(children: .combine)
+                        .accessibilityIdentifier(AccessibilityIdentifiers.BreweryDetail.contactInformation.id)
                 }
             }
         }

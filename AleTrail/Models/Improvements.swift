@@ -35,11 +35,6 @@ import Foundation
 /// been employing. A single model seemed sufficient for persisting these two
 /// pieces of data. Thus, simply "Settings".
 ///
-/// *BreweryList - Performance*
-/// If you scroll super fast, there can be some goofy behavior around lazy loading --
-/// view de-allocation/allocation & the progress indicator to load the next page of data.
-/// This could use some tightening up for speedy scrollers and quick connections.
-///
 /// *BreweryServiceEndpoint/BreweryService - Search and ByCity*
 /// I originally included a "search" endpoint for fetching Breweries by city, but really
 /// the OpenBrewery API includes a true search endpoint, presumably

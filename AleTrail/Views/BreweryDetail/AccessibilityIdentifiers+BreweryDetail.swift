@@ -13,6 +13,7 @@ extension AccessibilityIdentifiers {
         case generalInformation
         case breweryType(String)
         case locationInformation
+        case contactInformation
         case favoriteButton(favorited: Bool)
         
         var screenID: String {
@@ -29,6 +30,8 @@ extension AccessibilityIdentifiers {
                 "breweryType"
             case .locationInformation:
                 "locationInformation"
+            case .contactInformation:
+                "contactInformation"
             case .favoriteButton:
                 "favoriteButton"
             }
@@ -40,7 +43,10 @@ extension AccessibilityIdentifiers {
                 return "Brewery is \(favorited ? "favorited" : "not favorited")"
             case .breweryType(let type):
                 return "Brewery type: \(type)"
-            case .scrollView, .generalInformation, .locationInformation:
+            case .scrollView,
+                    .generalInformation,
+                    .locationInformation,
+                    .contactInformation:
                 return nil
             }
         }
@@ -52,7 +58,8 @@ extension AccessibilityIdentifiers {
             case .scrollView,
                     .generalInformation,
                     .breweryType,
-                    .locationInformation:
+                    .locationInformation,
+                    .contactInformation:
                 return nil
             }
         }

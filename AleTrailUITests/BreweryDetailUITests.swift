@@ -33,6 +33,17 @@ final class BreweryDetailUITests: XCTestCase {
         XCTAssert(unionBreweryExists, "Expected item with id 6f07acc5-3db8-4380-b30f-98d256184c56 to exist in brewery list.")
         unionBreweryNavigationLink.tap()
         
+//        // General Information
+//        let generalInformationSection = app.otherElements["BreweryDetail.generalInformation"].firstMatch
+//        XCTAssert(generalInformationSection.exists, "Expected General Information section to exist.")
+//        
+//        // Location Information
+//        let locationInformationSection = app.tables.cells["BreweryDetail.locationInformation"].firstMatch
+//        XCTAssert(locationInformationSection.exists, "Expected Location Information section to exist.")
+//        
+//        // Contact Information
+//        let contactInformationSection = app.tables.cells["BreweryDetail.contactInformation"].firstMatch
+//        XCTAssert(contactInformationSection.exists, "Expected Contact Information section to exist.")
         
     }
     

@@ -23,6 +23,10 @@ import Foundation
     var hasBreweryServiceError: Bool = false
     var lastLoadedBreweryPage: Int = 1
     var lastLoadedBreweryID: String?
+    
+    var hasErrorOnPageLoad: Bool {
+        breweryServiceError != nil && lastLoadedBreweryPage > 1
+    }
         
     init(breweryService: BreweryService) {
         self.breweryService = breweryService
@@ -67,11 +71,19 @@ import Foundation
         
         do {
             let result = try await breweryService.getBreweries(page: lastLoadedBreweryPage)
+            hasBreweryServiceError = false
+            breweryServiceError = nil
             updateBreweries(result: result, initialFetch: initialFetch)
         } catch {
             debugPrint("Error fetching brewery list: \(error.errorDescription ?? "BreweryServiceError")")
+            allBreweriesHaveBeenLoaded = true
             breweryServiceError = error
             hasBreweryServiceError = true
+            
+            // Set page back one if required
+            if lastLoadedBreweryPage > 1 {
+                lastLoadedBreweryPage -= 1
+            }
         }
         
         loading = false
@@ -110,8 +122,14 @@ import Foundation
             updateBreweries(result: result, initialFetch: initialFetch)
         } catch {
             debugPrint("Error fetching brewery list by IDs: \(error.errorDescription ?? "BreweryServiceError")")
+            allBreweriesHaveBeenLoaded = true
             breweryServiceError = error
             hasBreweryServiceError = true
+            
+            // Set page back one if required
+            if lastLoadedBreweryPage > 1 {
+                lastLoadedBreweryPage -= 1
+            }
         }
         
         loading = false
