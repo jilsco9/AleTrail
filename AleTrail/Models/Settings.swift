@@ -20,11 +20,20 @@ import SwiftData
         self.breweryListDisplayMode = listDisplayMode.rawValue
     }
     
-    func removeFavorite(id: String) {
+    func removeFavorite(
+        id: String,
+        modelContext: ModelContext
+    ) {
         favoriteBreweryIDs.remove(id)
+        try? modelContext.save()
     }
     
-    func addFavorite(id: String) {
+    func addFavorite(
+        id: String,
+        modelContext: ModelContext
+    ) {
+        print("Inserting \(id)")
         favoriteBreweryIDs.insert(id)
+        try? modelContext.save()
     }
 }

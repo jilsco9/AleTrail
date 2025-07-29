@@ -16,11 +16,22 @@ enum NetworkingError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .decodingError(let error):
-            return error.errorDescription
+            return error.errorDescription ?? "Decoding error"
         case .urlError(let error):
             return error.localizedDescription
         case .other(let error):
             return error.localizedDescription
+        }
+    }
+    
+    var localizedDescription: String {
+        switch self {
+        case .decodingError(let error):
+            error.localizedDescription
+        case .urlError(let error):
+            error.localizedDescription
+        case .other(let error):
+            error.localizedDescription
         }
     }
     

@@ -6,8 +6,11 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct BreweryDetail: View {
+    @Environment(\.modelContext) private var modelContext
+    
     let brewery: Brewery
     let settings: Settings
     
@@ -36,10 +39,11 @@ struct BreweryDetail: View {
     var body: some View {
         VStack {
             List {
-                VStack(alignment: .leading) {
+                Section {
                     VStack(alignment: .leading) {
                         Text(brewery.name)
                             .font(.largeTitle)
+                            .fixedSize(horizontal: false, vertical: true)
                         
                         HStack(spacing: 10) {
                             ForEach(locationSummaryComponents, id: \.self) { component in
@@ -55,12 +59,19 @@ struct BreweryDetail: View {
                     .accessibilityElement(children: .combine)
                     .accessibilityIdentifier(AccessibilityIdentifiers.BreweryDetail.generalInformation.id)
                     
-                    Divider()
-                        .padding(10)
-                    
-                    BreweryTypeView(breweryTypeTitle: brewery.breweryType)
-                        .accessibilityElement(children: .combine)
-                        .accessibility(AccessibilityIdentifiers.BreweryDetail.breweryType(brewery.breweryType ?? "Unknown"))
+                    VStack(alignment: .leading, spacing: 10) {
+                        BreweryTypeView(breweryTypeTitle: brewery.breweryType)
+                            .accessibilityElement(children: .combine)
+                            .accessibility(AccessibilityIdentifiers.BreweryDetail.breweryType(brewery.breweryType ?? "Unknown"))
+                    }
+                }
+                
+                Section("Location") {
+                    BreweryLocationView(brewery: brewery)
+                }
+                
+                Section("Contact") {
+                    BreweryContactView(brewery: brewery)
                 }
             }
         }
@@ -70,7 +81,7 @@ struct BreweryDetail: View {
                     isFavorite ? "Remove Favorite" : "Add Favorite",
                     systemImage: isFavorite ? "heart.fill" : "heart",
                     action: {
-                        isFavorite ? settings.removeFavorite(id: brewery.id) : settings.addFavorite(id: brewery.id)
+                        isFavorite ? settings.removeFavorite(id: brewery.id, modelContext: modelContext) : settings.addFavorite(id: brewery.id, modelContext: modelContext)
                     }
                 )
                 .tint(.accent)
@@ -87,4 +98,5 @@ struct BreweryDetail: View {
             settings: Settings.preview
         )
     }
+    .modelContainer(for: Settings.self, inMemory: true)
 }

@@ -20,6 +20,15 @@ enum BreweryServiceError: LocalizedError {
         }
     }
     
+    var localizedError: String {
+        switch self {
+        case .invalidEndpoint:
+            return "Invalid endpoint"
+        case .networkingError(let networkingError):
+            return networkingError.localizedDescription
+        }
+    }
+    
     var failureReason: String? {
         switch self {
         case .invalidEndpoint:

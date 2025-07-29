@@ -24,11 +24,15 @@ final class BreweryDetailUITests: XCTestCase {
     
     @MainActor
     func testBreweryListScreen() throws {
-        // UI tests must launch the application that they test.
         let app = XCUIApplication()
         app.launch()
         
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        // Confirm Union Brewing list item and tap
+        let unionBreweryNavigationLink = app.buttons["BreweryList.breweryListItem.6f07acc5-3db8-4380-b30f-98d256184c56"].firstMatch
+        let unionBreweryExists = unionBreweryNavigationLink.waitForExistence(timeout: 1)
+        XCTAssert(unionBreweryExists, "Expected item with id 6f07acc5-3db8-4380-b30f-98d256184c56 to exist in brewery list.")
+        unionBreweryNavigationLink.tap()
+        
         
     }
     
@@ -47,12 +51,6 @@ final class BreweryDetailUITests: XCTestCase {
         // Confirm favorites list is empty
         let emptyFavoritesListExists = app.otherElements["BreweryList.noBreweriesView"].waitForExistence(timeout: 1)
         XCTAssert(emptyFavoritesListExists, "Expected favorites list to be empty.")
-        
-        //        // Confirm Union Brewing list item and tap
-        //        let unionBreweryNavigationLink = app.buttons["BreweryList.breweryListItem.6f07acc5-3db8-4380-b30f-98d256184c56"].firstMatch
-        //        let unionBreweryExists = unionBreweryNavigationLink.waitForExistence(timeout: 1)
-        //        XCTAssert(unionBreweryExists, "Expected item with id 6f07acc5-3db8-4380-b30f-98d256184c56 to exist in brewery list.")
-        //        unionBreweryNavigationLink.tap()
         
         // Navigate back to All breweries list and tap Union Brewing
         app.buttons["BreweryList.allBreweriesButton"].tap()

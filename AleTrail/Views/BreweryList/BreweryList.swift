@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct BreweryList: View {
     @Environment(AleTrailAppModel.self) private var appModel
@@ -86,4 +87,5 @@ struct BreweryList: View {
         BreweryList(settings: .preview)
     }
     .environment(appModel)
+    .modelContainer(for: Settings.self, inMemory: true)
 }

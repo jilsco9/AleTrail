@@ -9,6 +9,16 @@ import Foundation
 
 // TODO: - Move this file out... add notes to readme.
 ///
+/// *AleTrailAppModel/BreweryService*
+/// I discovered something problematic in my final round of testing -- the API has a limit on how
+/// many IDs can be searched at one time. This means that once that limit is hit by adding favorite
+/// breweries, the app will always show an alert on fetching favorite breweries. The user could
+/// theoretically work around this error only by deleting the app (and/or its data) or by
+/// navigating to the "all breweries" list and removing some favorites via the details screens.
+/// The solution to this API limitation would be to implement
+/// custom "pagination" for the favorite IDs, in which only the max number of favorites are fetched from
+/// the service at one time.
+///
 /// *Settings - Offline model persistence*
 /// Currently only storing favorite model IDs.
 /// Depending on how we want the app to work, we could alternatively store
@@ -129,6 +139,12 @@ import Foundation
 /// I included some minimal symbol documentation in the code, but with no time limitations,
 /// I could expand that further.
 ///
+/// *BreweryContactView - Formatting/Localization*
+/// I would like to properly format phone numbers based on the
+/// user's region/language settings. I would also like to have the
+/// brewery's web URL open up the actual website  in browser
+/// upon tapping.
+///
 /// *Whole App - Testing*
 /// One thing I did not set up was error testing -- creating the mock brewery service in such a
 /// way as to allow for returning an error. This could be accomplished simply by having a property
@@ -194,3 +210,8 @@ import Foundation
 /// a toolbar is the recommended component in the Human Interface Guidelines when a button will perform
 /// some action (i.e., fetch new data) rather than display a distinct view.
 ///
+/// *BreweryDetail - Adding Favorite*
+/// Adding a brewery to favorites was a little flaky, so I had to add the model
+/// context to Brewery detail so that I could pass it to the Settings methods.
+/// This allowed me to explicitly call "modelContext.save". It might be worth adding
+/// some error handling in the future in case of failure.

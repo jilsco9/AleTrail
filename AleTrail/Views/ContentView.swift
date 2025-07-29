@@ -17,6 +17,8 @@ struct ContentView: View {
             let newFavoriteBreweries = Settings(favoriteBreweryIDs: [])
             modelContext.insert(newFavoriteBreweries)
         }
+        
+        print(settings.first?.favoriteBreweryIDs ?? "No settings")
     }
     
     var body: some View {

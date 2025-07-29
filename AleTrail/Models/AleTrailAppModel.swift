@@ -77,6 +77,10 @@ import Foundation
         loading = false
     }
     
+    /// - Warning: Discovered via testing that there is a limit to how many ids can be searched at
+    /// one time. This limit seems to be about 6, but it is not documented on the OpenBrewery API.
+    /// We would need to implement custom pagination, fetching only 6 favorites at a time.
+    ///
     func getBreweriesByIDs(_ ids: [String], initialFetch: Bool = false) async {
         if initialFetch {
             allBreweriesHaveBeenLoaded = false
