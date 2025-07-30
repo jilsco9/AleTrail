@@ -16,6 +16,8 @@ struct BreweryContactView: View {
                 title: "Phone Number",
                 values: [BreweryDetailItemView.DetailComponent(text: phone)]
             )
+            .accessibilityElement(children: .contain)
+            .accessibilityIdentifier(AccessibilityAttributes.BreweryDetail.contactInformationPhone.id)
         }
         
         if let website = brewery.websiteUrl {
@@ -23,6 +25,8 @@ struct BreweryContactView: View {
                 title: "Website",
                 values: [BreweryDetailItemView.DetailComponent(text: website)]
             )
+            .accessibilityElement(children: .contain)
+            .accessibilityIdentifier(AccessibilityAttributes.BreweryDetail.contactInformationWebsite.id)
         }
     }
 }

@@ -43,7 +43,7 @@ struct BreweryList: View {
                         settings: settings
                     )
                 }
-                .accessibility(AccessibilityIdentifiers.BreweryList.breweryListItem(id: brewery.id))
+                .accessibility(AccessibilityAttributes.BreweryList.breweryListItem(id: brewery.id))
                 .onScrollVisibilityChange(threshold: 0.5) { isVisible in
                     if isVisible, brewery.id == appModel.lastLoadedBreweryID, brewery.id != lastIDToInitiateLoad {
                         lastIDToInitiateLoad = brewery.id
@@ -57,7 +57,7 @@ struct BreweryList: View {
             
             if appModel.loading {
                 ProgressView()
-                    .accessibility(AccessibilityIdentifiers.BreweryList.progressIndicator)
+                    .accessibility(AccessibilityAttributes.BreweryList.progressIndicator)
             } else if appModel.hasErrorOnPageLoad {
                 VStack {
                     Text("An error occurred loading more breweries.")
@@ -74,7 +74,12 @@ struct BreweryList: View {
             }
         }
         .accessibilityElement(children: .contain)
-        .accessibility(AccessibilityIdentifiers.BreweryList.scrollView)
+        .accessibility(AccessibilityAttributes.BreweryList.list)
+        .refreshable {
+            Task {
+                await updateBreweryList(displayMode: settings.breweryListDisplayMode, initialFetch: true)
+            }
+        }
         .overlay {
             if !appModel.loading,
                 appModel.allBreweriesHaveBeenLoaded,
@@ -86,7 +91,7 @@ struct BreweryList: View {
                         Text(displayMode.noResultsMessage)
                     }
                     .accessibilityElement(children: .contain)
-                    .accessibility(AccessibilityIdentifiers.BreweryList.noBreweriesView)
+                    .accessibility(AccessibilityAttributes.BreweryList.noBreweriesView)
                 }
         }
         .onChange(of: settings.breweryListDisplayMode, initial: true) {

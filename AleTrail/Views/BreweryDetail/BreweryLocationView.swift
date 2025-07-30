@@ -57,6 +57,8 @@ struct BreweryLocationView: View {
                 )
             }
         }
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier(AccessibilityAttributes.BreweryDetail.locationInformation.id)
         
         if brewery.latitude != nil || brewery.longitude != nil {
             VStack(alignment: .leading, spacing: 10) {
@@ -74,6 +76,8 @@ struct BreweryLocationView: View {
                     )
                 }
             }
+            .accessibilityElement(children: .contain)
+            .accessibilityIdentifier(AccessibilityAttributes.BreweryDetail.locationCoordinates.id)
         }
     }
 }

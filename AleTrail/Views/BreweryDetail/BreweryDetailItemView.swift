@@ -23,6 +23,7 @@ struct BreweryDetailItemView: View {
                 .foregroundStyle(.secondary)
             ForEach(values) { value in
                 Text(value.text)
+                    .font(.body)
             }
         }
     }

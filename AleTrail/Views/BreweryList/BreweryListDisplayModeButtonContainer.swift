@@ -35,9 +35,9 @@ fileprivate extension BreweryListDisplayMode {
     func getAccessibility(selected: Bool) -> Accessibility {
         switch self {
         case .all:
-            AccessibilityIdentifiers.BreweryList.allBreweriesButton(selected: selected)
+            AccessibilityAttributes.BreweryList.allBreweriesButton(selected: selected)
         case .favorites:
-            AccessibilityIdentifiers.BreweryList.favoritesButton(selected: selected)
+            AccessibilityAttributes.BreweryList.favoritesButton(selected: selected)
         }
     }
 }

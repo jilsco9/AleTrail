@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct AccessibilityIdentifiers {}
+struct AccessibilityAttributes {}
 
 protocol Accessibility {
     var screenID: String { get }

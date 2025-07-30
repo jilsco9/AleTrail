@@ -57,27 +57,25 @@ struct BreweryDetail: View {
                     .font(.caption)
                     .padding(.bottom, 5)
                     .accessibilityElement(children: .combine)
-                    .accessibilityIdentifier(AccessibilityIdentifiers.BreweryDetail.generalInformation.id)
+                    .accessibilityIdentifier(AccessibilityAttributes.BreweryDetail.generalInformation.id)
                     
-                    VStack(alignment: .leading, spacing: 10) {
-                        BreweryTypeView(breweryTypeTitle: brewery.breweryType)
+                    if let breweryType = BreweryType(rawValue: brewery.breweryType ?? "") {
+                        BreweryTypeView(breweryType: breweryType)
                             .accessibilityElement(children: .combine)
-                            .accessibility(AccessibilityIdentifiers.BreweryDetail.breweryType(brewery.breweryType ?? "Unknown"))
+                            .accessibility(AccessibilityAttributes.BreweryDetail.breweryType(breweryType.title))
                     }
                 }
                 
                 Section("Location") {
                     BreweryLocationView(brewery: brewery)
-                        .accessibilityElement(children: .combine)
-                        .accessibilityIdentifier(AccessibilityIdentifiers.BreweryDetail.locationInformation.id)
                 }
                 
                 Section("Contact") {
                     BreweryContactView(brewery: brewery)
-                        .accessibilityElement(children: .combine)
-                        .accessibilityIdentifier(AccessibilityIdentifiers.BreweryDetail.contactInformation.id)
                 }
             }
+            .accessibilityElement(children: .contain)
+            .accessibilityIdentifier(AccessibilityAttributes.BreweryDetail.list.id)
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -89,7 +87,7 @@ struct BreweryDetail: View {
                     }
                 )
                 .tint(.accent)
-                .accessibility(AccessibilityIdentifiers.BreweryDetail.favoriteButton(favorited: isFavorite))
+                .accessibility(AccessibilityAttributes.BreweryDetail.favoriteButton(favorited: isFavorite))
             }
         }
     }

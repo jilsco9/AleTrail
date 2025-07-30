@@ -8,22 +8,20 @@
 import SwiftUI
 
 struct BreweryTypeView: View {
-    let breweryTypeTitle: String?
+    let breweryType: BreweryType
     
     var body: some View {
-        if let breweryType = BreweryType(rawValue: breweryTypeTitle ?? "") {
-            HStack {
-                Image(systemName: breweryType.systemImage)
-                    .font(.title)
-                    .foregroundStyle(.accent)
-                Divider()
-                Text(breweryType.title)
-                    .font(.headline)
-            }
+        HStack {
+            Image(systemName: breweryType.systemImage)
+                .font(.title)
+                .foregroundStyle(.accent)
+            Divider()
+            Text(breweryType.title)
+                .font(.headline)
         }
     }
 }
 
 #Preview {
-    BreweryTypeView(breweryTypeTitle: BreweryType.micro.rawValue)
+    BreweryTypeView(breweryType: BreweryType.micro)
 }

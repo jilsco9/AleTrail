@@ -1,5 +1,5 @@
 //
-//  AccessibilityIdentifiers+BreweryList.swift
+//  AccessibilityAttributes+BreweryList.swift
 //  AleTrail
 //
 //  Created by Jillian Scott on 7/28/25.
@@ -7,12 +7,11 @@
 
 import Foundation
 
-extension AccessibilityIdentifiers {
+extension AccessibilityAttributes {
     enum BreweryList: Accessibility {
-        case scrollView
+        case list
         case allBreweriesButton(selected: Bool)
         case favoritesButton(selected: Bool)
-        case navigationTitle
         case progressIndicator
         case breweryListItem(id: String)
         case noBreweriesView
@@ -23,14 +22,12 @@ extension AccessibilityIdentifiers {
         
         var componentID: String {
             switch self {
-            case .scrollView:
-                "scrollView"
+            case .list:
+                "list"
             case .allBreweriesButton:
                 "allBreweriesButton"
             case .favoritesButton:
                 "favoritesButton"
-            case .navigationTitle:
-                "navigationTitle"
             case .progressIndicator:
                 "progressIndicator"
             case .breweryListItem(let id):
@@ -46,8 +43,7 @@ extension AccessibilityIdentifiers {
                 return "All Breweries \(selected ? "Selected" : "Not selected")"
             case .favoritesButton(let selected):
                 return "Favorite Breweries \(selected ? "Selected" : "Not selected")"
-            case .scrollView,
-                    .navigationTitle,
+            case .list,
                     .progressIndicator,
                     .breweryListItem,
                     .noBreweriesView:
@@ -61,8 +57,7 @@ extension AccessibilityIdentifiers {
                 return selected ? nil : "Tap to show all breweries."
             case .favoritesButton(let selected):
                 return selected ? nil : "Tap to show favorite breweries."
-            case .scrollView,
-                    .navigationTitle,
+            case .list,
                     .progressIndicator,
                     .breweryListItem,
                     .noBreweriesView:

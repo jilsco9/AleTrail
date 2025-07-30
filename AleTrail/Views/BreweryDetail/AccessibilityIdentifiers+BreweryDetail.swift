@@ -7,13 +7,15 @@
 
 import Foundation
 
-extension AccessibilityIdentifiers {
+extension AccessibilityAttributes {
     enum BreweryDetail: Accessibility {
-        case scrollView
+        case list
         case generalInformation
         case breweryType(String)
         case locationInformation
-        case contactInformation
+        case locationCoordinates
+        case contactInformationPhone
+        case contactInformationWebsite
         case favoriteButton(favorited: Bool)
         
         var screenID: String {
@@ -22,16 +24,20 @@ extension AccessibilityIdentifiers {
         
         var componentID: String {
             switch self {
-            case .scrollView:
-                "scrollView"
+            case .list:
+                "list"
             case .generalInformation:
                 "generalInformation"
             case .breweryType:
                 "breweryType"
             case .locationInformation:
                 "locationInformation"
-            case .contactInformation:
-                "contactInformation"
+            case .locationCoordinates:
+                "locationCoordinates"
+            case .contactInformationPhone:
+                "contactInformationPhone"
+            case .contactInformationWebsite:
+                "contactInformationWebsite"
             case .favoriteButton:
                 "favoriteButton"
             }
@@ -43,10 +49,12 @@ extension AccessibilityIdentifiers {
                 return "Brewery is \(favorited ? "favorited" : "not favorited")"
             case .breweryType(let type):
                 return "Brewery type: \(type)"
-            case .scrollView,
+            case .list,
                     .generalInformation,
                     .locationInformation,
-                    .contactInformation:
+                    .contactInformationPhone,
+                    .contactInformationWebsite,
+                    .locationCoordinates:
                 return nil
             }
         }
@@ -55,11 +63,13 @@ extension AccessibilityIdentifiers {
             switch self {
             case .favoriteButton(let favorited):
                 return "Tap to \(favorited ? "remove from favorites" : "add to favorites")"
-            case .scrollView,
+            case .list,
                     .generalInformation,
                     .breweryType,
                     .locationInformation,
-                    .contactInformation:
+                    .contactInformationPhone,
+                    .contactInformationWebsite,
+                    .locationCoordinates:
                 return nil
             }
         }
