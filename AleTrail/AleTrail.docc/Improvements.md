@@ -110,14 +110,24 @@ lots more that could be done.
 
 ### Expand upon testing - UI and unit
 *Whole App*
-One thing I did not set up was error testing -- creating the mock brewery service in such a
-way as to allow for returning an error. This could be accomplished simply by having a property
-that can be set within the test to define the return value or error. Alternatively, we could
-leverage a library that allows us to set up more robust expectation capabilities
-within our mocks.
+One thing I did not set up was error testing -- creating the mock brewery 
+service in such a way as to allow for returning an error. This could be 
+accomplished simply by having a property that can be set within the test to 
+define the return value or error. Alternatively, we could leverage a library
+that allows us to set up more robust expectation capabilities within our mocks.
 I could also expand testing to include snapshot testing.
 I wanted to include testing of continued lazily loading brewery results in the 
 Brewery list UI testing, but time was too short to accomplish this effectively.
+For Unit testing, there are still some places to expand. The current unit tests are
+larger than I'd generally like, and this indicates the methods themselves are likely
+doing too much within the model. I'd also like to add more tests around string 
+formatting.
+
+### Add logging and analytics
+I used a few debugPrint statements around the app, but a true logging library like
+the native Logger would be ideal.
+If desired, analytics could also be added via third party library to get some
+insight into usage and potential issues.
 
 ### Build out localization
 *Whole App*
@@ -127,18 +137,19 @@ fully.
 
 ### Streamline UI testing by Accessibility Identifier
 *AleTrailUITests*
-I could leverage our existing accessibility identifiers for the UI tests, i.e., either by creating
-a struct/enum with identifiers for each given screen or by simply adding the accessibility identifier
-files from the main app target to the UITest target as well. For now, though, I'm just going to use
-string literals so as not to overdo dynamic string creation and instead create very explicit expectations
-against which to test.
+I could leverage our existing accessibility identifiers for the UI tests, i.e., 
+either by creating a struct/enum with identifiers for each given screen or 
+by simply adding the accessibility identifier files from the main app 
+target to the UITest target as well. For now, though, I'm just going to use
+string literals so as not to overdo dynamic string creation and instead create
+very explicit expectations against which to test.
 
 ## Visual Improvements
 ### Improve launch screen appearance
 *Launch Screen*
 I used a variant of the AccentColor to enter a LaunchScreen background color in the
-plist file. The plist isn't really an ideal way of customizing the LaunchScreen; iwere to
-continue to build out this app, I would either:
+plist file. The plist isn't really an ideal way of customizing the LaunchScreen; 
+if I were to continue to build out this app, I would either:
 - continue to use the plist and add light/dark color variants and an image, or
 - add a storyboard for the launch screen in order to have more control/customizatcapabilities
 
