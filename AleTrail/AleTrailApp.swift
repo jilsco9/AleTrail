@@ -30,7 +30,7 @@ struct AleTrailApp: App {
     
     @State var appModel: AleTrailAppModel = {
 #if TESTING
-        return AleTrailAppModel(breweryService: MockBreweryService())
+        return AleTrailAppModel(breweryService: MockBreweryService(breweryList: Brewery.previewList))
 #else
         return AleTrailAppModel(breweryService: AleTrailBreweryService())
 #endif

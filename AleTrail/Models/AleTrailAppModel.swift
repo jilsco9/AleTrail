@@ -28,7 +28,9 @@ import Foundation
         breweryServiceError != nil && lastLoadedBreweryPage > 1
     }
         
-    init(breweryService: BreweryService) {
+    init(
+        breweryService: BreweryService
+    ) {
         self.breweryService = breweryService
     }
     

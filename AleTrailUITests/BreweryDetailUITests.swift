@@ -158,7 +158,7 @@ final class BreweryDetailUITests: XCTestCase {
     @MainActor
     func testAddBreweryToFavorites() throws {
         let app = XCUIApplication()
-        app.activate()
+        app.launch()
         
         // Wait for app data to load. Confirm first brewery row exists.
         // Confirm Union Brewing list item and tap

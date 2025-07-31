@@ -8,17 +8,27 @@
 import Foundation
 
 actor MockBreweryService: BreweryService {
+    var breweryList: [Brewery]
+    
+    init(breweryList: [Brewery]) {
+        self.breweryList = breweryList
+    }
+    
+    func updateBreweryList(_ breweryList: [Brewery]) {
+        self.breweryList = breweryList
+    }
+    
     func getBreweries(byIDs ids: [String], page: Int) async throws(BreweryServiceError) -> [Brewery] {
-        return await Brewery.previewList.filter { ids.contains($0.id) }
+        return breweryList.filter { ids.contains($0.id) }
     }
     
     func getBreweries(page: Int) async throws(BreweryServiceError) -> [Brewery] {
-        return await Brewery.previewList
+        return breweryList
     }
     
-    // Note: Funcitonality cut for scope
+    // Note: Functionality cut for scope
     func getBreweries(byCity city: String, page: Int) async throws(BreweryServiceError) -> [Brewery] {
-        return await Brewery.previewList.filter { brewery in
+        return breweryList.filter { brewery in
             brewery.city?.lowercased().contains(city.lowercased()) ?? false
         }
     }
