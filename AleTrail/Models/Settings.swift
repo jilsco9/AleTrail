@@ -24,6 +24,7 @@ import SwiftData
         id: String,
         modelContext: ModelContext
     ) {
+        debugPrint("Removing \(id) from favorites")
         favoriteBreweryIDs.remove(id)
         try? modelContext.save()
     }
@@ -32,7 +33,7 @@ import SwiftData
         id: String,
         modelContext: ModelContext
     ) {
-        print("Inserting \(id)")
+        debugPrint("Adding \(id) to favorites")
         favoriteBreweryIDs.insert(id)
         try? modelContext.save()
     }

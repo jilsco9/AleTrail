@@ -14,11 +14,10 @@ struct ContentView: View {
         
     func createSettingsIfNeeded() {
         if settings.first == nil {
+            debugPrint("No previous settings found. Creating settings model.")
             let newFavoriteBreweries = Settings(favoriteBreweryIDs: [])
             modelContext.insert(newFavoriteBreweries)
         }
-        
-        print(settings.first?.favoriteBreweryIDs ?? "No settings")
     }
     
     var body: some View {

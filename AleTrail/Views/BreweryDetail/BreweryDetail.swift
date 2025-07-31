@@ -66,13 +66,15 @@ struct BreweryDetail: View {
                     }
                 }
                 
+                Section("Contact") {
+                    BreweryContactView(brewery: brewery)
+                }
+                
                 Section("Location") {
                     BreweryLocationView(brewery: brewery)
                 }
                 
-                Section("Contact") {
-                    BreweryContactView(brewery: brewery)
-                }
+
             }
             .accessibilityElement(children: .contain)
             .accessibilityIdentifier(AccessibilityAttributes.BreweryDetail.list.id)

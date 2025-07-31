@@ -12,6 +12,8 @@ Swift structured concurrency.
 
 To run the app, ensure you have the latest Xcode 26 beta. Clone this repo, and run.
 
+To view documentation as intended, in Xcode, go to Product > Build Documentation.
+
 AleTrail uses the OpenBrewery API, which does not require an API key.
 
 ## Project Details
@@ -80,6 +82,6 @@ favorited brewery IDs and the latest viewed Brewery list mode.
 
 ## Topics
 
-### <!--@START_MENU_TOKEN@-->Group<!--@END_MENU_TOKEN@-->
+### Other App Topics
 
-- <!--@START_MENU_TOKEN@-->``Symbol``<!--@END_MENU_TOKEN@-->
+- <doc:Improvements>

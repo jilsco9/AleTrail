@@ -14,17 +14,15 @@ struct BreweryDetailItemView: View {
     }
     
     let title: String
-    let values: [DetailComponent]
+    let value: String
     
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
             Text(title.uppercased())
                 .font(.caption)
                 .foregroundStyle(.secondary)
-            ForEach(values) { value in
-                Text(value.text)
-                    .font(.body)
-            }
+            Text(value)
+                .font(.body)
         }
         .accessibilityElement(children: .combine)
     }
@@ -33,9 +31,6 @@ struct BreweryDetailItemView: View {
 #Preview {
     BreweryDetailItemView(
         title: "Address",
-        values: [
-            .init(text: "123 Main St"),
-            .init(text: "Anytown, USA 12345"),
-        ]
+        value: "123 Main St"
     )
 }

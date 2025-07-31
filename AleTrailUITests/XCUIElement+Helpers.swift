@@ -17,7 +17,6 @@ extension XCUIElement {
         while count < scrollRetryCount {
             swipeUp()
             if subview.waitForExistence(timeout: 1) {
-                print("Found after scrolling")
                 return true
             }
             count += 1

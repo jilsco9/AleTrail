@@ -63,9 +63,6 @@ struct BreweryList: View {
                     Text("An error occurred loading more breweries.")
                     Button("Try again") {
                         Task {
-                            // TODO: - this is logic that I'd like to move to model, but I don't want to introduce
-                            // another arg. But maybe loadingInitiationType (initialFetch/nextPage/loadRetry?)
-                            // to differentiate?
                             appModel.allBreweriesHaveBeenLoaded = false
                             await updateBreweryList(displayMode: settings.breweryListDisplayMode, initialFetch: false)
                         }

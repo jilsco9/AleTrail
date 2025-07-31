@@ -17,13 +17,13 @@ actor AleTrailBreweryService: BreweryService {
     /// Get a list (one page) of breweries.
     ///
     /// Results from the service are paginated, with the max results per page
-    ///  identified by ``BreweryServiceEndpoint.perPage``.
+    ///  identified by ``BreweryServiceEndpoint/perPage``.
     ///
     /// - Parameters:
     ///   - page: 1-based index of paginated results
     /// - Returns: Array of Brewery models for the given page
-    /// - Throws: Brewery service error -- ``BreweryServiceError.invalidEndpoint``
-    ///   if the URL cannot be created or ``BreweryServiceError.networkingError``
+    /// - Throws: Brewery service error -- ``BreweryServiceError/invalidEndpoint``
+    ///   if the URL cannot be created or ``BreweryServiceError/networkingError(_:)``
     ///   with an associated ``NetworkingError``
     func getBreweries(
         page: Int = 1
@@ -45,14 +45,14 @@ actor AleTrailBreweryService: BreweryService {
     /// Get a list (one page) of breweries identified by ID.
     ///
     /// Results from the service are paginated, with the max results per page
-    ///  identified by ``BreweryServiceEndpoint.perPage``.
+    ///  identified by ``BreweryServiceEndpoint/perPage``.
     ///
     /// - Parameters:
     ///   - ids: Array of brewery IDs
     ///   - page: 1-based index of paginated results
     /// - Returns: Array of Brewery models for the given page
-    /// - Throws: Brewery service error -- ``BreweryServiceError.invalidEndpoint``
-    ///   if the URL cannot be created or ``BreweryServiceError.networkingError``
+    /// - Throws: Brewery service error -- ``BreweryServiceError/invalidEndpoint``
+    ///   if the URL cannot be created or ``BreweryServiceError/networkingError(_:)``
     ///   with an associated ``NetworkingError``
     func getBreweries(
         byIDs ids: [String],
@@ -77,14 +77,14 @@ actor AleTrailBreweryService: BreweryService {
     /// Get a list (one page) of breweries by city.
     ///
     /// Results from the service are paginated, with the max results per page
-    ///  identified by ``BreweryServiceEndpoint.perPage``.
+    ///  identified by ``BreweryServiceEndpoint/perPage``.
     ///
     /// - Parameters:
     ///   - city: Full string or partial string of city to search for breweries
     ///   - page: 1-based index of paginated results
     /// - Returns: Array of Brewery models for the given page
-    /// - Throws: Brewery service error -- ``BreweryServiceError.invalidEndpoint``
-    ///   if the URL cannot be created or ``BreweryServiceError.networkingError``
+    /// - Throws: Brewery service error -- ``BreweryServiceError/invalidEndpoint``
+    ///   if the URL cannot be created or ``BreweryServiceError/networkingError(_:)``
     ///   with an associated ``NetworkingError``
     func getBreweries(
         byCity city: String,
