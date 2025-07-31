@@ -21,7 +21,7 @@ struct BreweryList: View {
         case BreweryListDisplayMode.all.rawValue:
             await appModel.getBreweryList(initialFetch: initialFetch)
         case BreweryListDisplayMode.favorites.rawValue:
-            await appModel.getBreweriesByIDs(
+            await appModel.getBreweriesByID(
                 Array(settings.favoriteBreweryIDs),
                 initialFetch: initialFetch
             )

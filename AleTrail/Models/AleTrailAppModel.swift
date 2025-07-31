@@ -95,7 +95,7 @@ import Foundation
     /// one time. This limit seems to be about 6, but it is not documented on the OpenBrewery API.
     /// We would need to implement custom pagination, fetching only 6 favorites at a time.
     ///
-    func getBreweriesByIDs(_ ids: [String], initialFetch: Bool = false) async {
+    func getBreweriesByID(_ ids: [String], initialFetch: Bool = false) async {
         if initialFetch {
             allBreweriesHaveBeenLoaded = false
             breweries = []
