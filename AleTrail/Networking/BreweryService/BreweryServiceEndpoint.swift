@@ -10,6 +10,7 @@ import Foundation
 enum BreweryServiceEndpoint {
     static let basePath: String = "https://api.openbrewerydb.org/v1/breweries"
     static let perPage: Int = 50
+    static let maxIDs: Int = 6
     
     case list(page: Int)
     // Note: Funcitonality cut for scope

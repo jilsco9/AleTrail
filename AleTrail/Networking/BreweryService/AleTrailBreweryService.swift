@@ -59,6 +59,10 @@ actor AleTrailBreweryService: BreweryService {
         page: Int = 1
     ) async throws(BreweryServiceError) -> [Brewery] {
         
+        guard await ids.count <= BreweryServiceEndpoint.maxIDs else {
+            throw BreweryServiceError.tooManyIDs
+        }
+        
         let url = try await BreweryServiceEndpoint.favorites(
             ids: ids,
             page: page

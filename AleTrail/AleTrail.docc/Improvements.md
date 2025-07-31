@@ -19,14 +19,20 @@ choices I made during this rapid building.
 
 ### Can only fetch a few breweries by ID at a time
 *AleTrailAppModel/BreweryService*
-I discovered something problematic in my final round of testing -- the API has a limit on how
-many IDs can be searched at one time. This means that once that limit is hit by adding favorite
-breweries, the app will always show an alert on fetching favorite breweries. The user could
-theoretically work around this error only by deleting the app (and/or its data) or by
-navigating to the "all breweries" list and removing some favorites via the details screens.
-The solution to this API limitation would be to implement
-custom "pagination" for the favorite IDs, in which only the max number of favorites are fetched from
-the service at one time.
+I discovered something problematic in my final round of testing -- the API has 
+a limit on how many IDs can be searched at one time. This means that once that 
+limit is hit by adding favorite breweries, the app will always show an alert
+on fetching favorite breweries. The user could theoretically work around this 
+error only by deleting the app (and/or its data) or by navigating to the 
+"all breweries" list and removing some favorites via the details screens.
+The solution to this API limitation would be to implement custom "pagination" 
+for the favorite IDs, in which only the max number of favorites are fetched from
+the service at one time. Alternatively, we could save the entire Brewery model
+in favorites and eliminate the need to fetch altogether. Then, upon navigation
+to brewery detail, we could fetch by that particular brewery ID if we are worried
+about data going stale. For now, I'll simply throw an error if there are >6
+brewery IDs added to favorites, but this is certainly a glaring user experience
+problem.
 
 ### Cut scope: Brewery Search vs Breweries by City
 *BreweryServiceEndpoint/BreweryService*

@@ -96,7 +96,13 @@ struct BreweryList: View {
                 await updateBreweryList(displayMode: settings.breweryListDisplayMode, initialFetch: true)
             }
         }
-        .alert(isPresented: $appModel.hasBreweryServiceError, error: appModel.breweryServiceError) {}
+        .alert(isPresented: $appModel.hasBreweryServiceError, error: appModel.breweryServiceError, actions: { _ in
+            Button("OK") {
+                appModel.breweryServiceError = nil
+            }
+        }, message: { error in
+            Text(error.recoverySuggestion ?? "Please try again.")
+        })
     }
 }
 

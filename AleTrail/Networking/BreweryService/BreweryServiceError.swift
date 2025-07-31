@@ -10,6 +10,7 @@ import Foundation
 enum BreweryServiceError: LocalizedError {
     case invalidEndpoint
     case networkingError(NetworkingError)
+    case tooManyIDs
     
     var errorDescription: String? {
         switch self {
@@ -17,6 +18,8 @@ enum BreweryServiceError: LocalizedError {
             return "Invalid endpoint"
         case .networkingError(let networkingError):
             return networkingError.errorDescription
+        case .tooManyIDs:
+            return "Too many IDs provided in request"
         }
     }
     
@@ -26,6 +29,8 @@ enum BreweryServiceError: LocalizedError {
             return "Invalid endpoint"
         case .networkingError(let networkingError):
             return networkingError.localizedDescription
+        case .tooManyIDs:
+            return "Too many IDs provided in request"
         }
     }
     
@@ -35,6 +40,8 @@ enum BreweryServiceError: LocalizedError {
             "Could not construct a valid URL with the given path."
         case .networkingError(let networkingError):
             networkingError.failureReason
+        case .tooManyIDs:
+            "Tried fetching too many IDs. The brewery service only permits \(BreweryServiceEndpoint.maxIDs) IDs to be fetched at one time."
         }
     }
     
@@ -44,6 +51,8 @@ enum BreweryServiceError: LocalizedError {
             nil
         case .networkingError(let networkingError):
             networkingError.recoverySuggestion
+        case .tooManyIDs:
+            "Please remove some breweries from favorites. This will be fixed in a future version."
         }
     }
 }
