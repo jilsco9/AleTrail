@@ -4,7 +4,15 @@ AleTrail lets a user view breweries and save them to favorites.
 
 ## Overview
 
-<!--@START_MENU_TOKEN@-->Text<!--@END_MENU_TOKEN@-->
+AleTrail gives users information on breweries around the world.
+
+It is built with Xcode 26 and targets iOS 26. It leverages modern Swift development
+paradigms like Swift Testing, SwiftData, String catalog, Documentation catalog, and
+Swift structured concurrency.
+
+To run the app, ensure you have the latest Xcode 26 beta. Clone this repo, and run.
+
+AleTrail uses the OpenBrewery API, which does not require an API key.
 
 ## Project Details
 
