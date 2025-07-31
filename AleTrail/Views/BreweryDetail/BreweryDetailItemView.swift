@@ -26,6 +26,7 @@ struct BreweryDetailItemView: View {
                     .font(.body)
             }
         }
+        .accessibilityElement(children: .combine)
     }
 }
 

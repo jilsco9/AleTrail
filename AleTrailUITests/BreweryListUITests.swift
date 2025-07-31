@@ -21,13 +21,13 @@ final class BreweryListUITests: XCTestCase {
         /// Wait for existence of list view (wait for app to finish initializing)
         let breweryList = app.collectionViews["BreweryList.list"]
         XCTAssert(
-            breweryList.waitForExistence(timeout: 1),
+            breweryList.waitForExistence(timeout: 3),
             "Did not find brewery list."
         )
         
         /// Wait for data to load (wait for existence of first expected list item)
         let unionBreweryNavigationLink = app.buttons["BreweryList.breweryListItem.6f07acc5-3db8-4380-b30f-98d256184c56"]
-        let unionBreweryExists = unionBreweryNavigationLink.waitForExistence(timeout: 1)
+        let unionBreweryExists = unionBreweryNavigationLink.waitForExistence(timeout: 3)
         XCTAssert(
             unionBreweryExists,
             "Did not find item with id 6f07acc5-3db8-4380-b30f-98d256184c56 in brewery list."
@@ -67,28 +67,28 @@ final class BreweryListUITests: XCTestCase {
         XCTAssertFalse(breweryList.exists)
     }
     
-//    @MainActor
-//    func testAccessibility() throws {
-//        continueAfterFailure = true
-//        
-//        let app = XCUIApplication()
-//        app.launch()
-//        
-//        /// Wait for existence of list view (wait for app to finish initializing)
-//        let breweryList = app.collectionViews["BreweryList.list"]
-//        XCTAssert(
-//            breweryList.waitForExistence(timeout: 1),
-//            "Did not find brewery list."
-//        )
-//        
-//        /// Wait for data to load (wait for existence of first expected list item)
-//        let unionBreweryNavigationLink = app.buttons["BreweryList.breweryListItem.6f07acc5-3db8-4380-b30f-98d256184c56"]
-//        let unionBreweryExists = unionBreweryNavigationLink.waitForExistence(timeout: 1)
-//        XCTAssert(
-//            unionBreweryExists,
-//            "Did not find item with id 6f07acc5-3db8-4380-b30f-98d256184c56 in brewery list."
-//        )
-//        
-//        try app.performAccessibilityAudit()
-//    }
+    @MainActor
+    func testAccessibility() throws {
+        continueAfterFailure = true
+        
+        let app = XCUIApplication()
+        app.launch()
+        
+        /// Wait for existence of list view (wait for app to finish initializing)
+        let breweryList = app.collectionViews["BreweryList.list"]
+        XCTAssert(
+            breweryList.waitForExistence(timeout: 3),
+            "Did not find brewery list."
+        )
+        
+        /// Wait for data to load (wait for existence of first expected list item)
+        let unionBreweryNavigationLink = app.buttons["BreweryList.breweryListItem.6f07acc5-3db8-4380-b30f-98d256184c56"]
+        let unionBreweryExists = unionBreweryNavigationLink.waitForExistence(timeout: 3)
+        XCTAssert(
+            unionBreweryExists,
+            "Did not find item with id 6f07acc5-3db8-4380-b30f-98d256184c56 in brewery list."
+        )
+        
+        try app.performAccessibilityAudit()
+    }
 }
