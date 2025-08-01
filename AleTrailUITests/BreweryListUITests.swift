@@ -34,20 +34,20 @@ final class BreweryListUITests: XCTestCase {
         )
         
         // Confirm navigation elements
-        let favoritesButton = app.buttons["BreweryList.favoritesButton"]
+        let favoritesButton = app.buttons["Favorite Breweries"]
         XCTAssert(
             favoritesButton.exists,
             "Did not find Favorite Breweries navigation button."
         )
         
-        let allBreweriesButton = app.buttons["BreweryList.allBreweriesButton"]
+        let allBreweriesButton = app.buttons["All Breweries"]
         XCTAssert(
             allBreweriesButton.exists,
             "Did not find All Breweries navigation button"
         )
         
-        let navigationTitle = app.navigationBars.staticTexts["Breweries"]
-        XCTAssertEqual(navigationTitle.label, "Breweries")
+        let navigationTitle = app.navigationBars.staticTexts["All Breweries"]
+        XCTAssertEqual(navigationTitle.label, "All Breweries")
         
         // Validate brewery row
         XCTAssert(

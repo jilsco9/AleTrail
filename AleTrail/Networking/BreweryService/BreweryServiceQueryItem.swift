@@ -10,9 +10,8 @@ import Foundation
 enum BreweryServiceQueryItem {
     case perPage(Int)
     case page(Int)
-    // Note: Funcitonality cut for scope
+    // Note: Functionality cut for scope
     case city(String)
-    case ids([String])
     
     var name: String {
         switch self {
@@ -22,8 +21,6 @@ enum BreweryServiceQueryItem {
             "page"
         case .city:
             "by_city"
-        case .ids:
-            "by_ids"
         }
     }
     
@@ -35,8 +32,6 @@ enum BreweryServiceQueryItem {
             String(page)
         case .city(let name):
             name
-        case .ids(let ids):
-            ids.joined(separator: ",")
         }
     }
     

@@ -26,21 +26,22 @@ struct SettingsTests {
             }
         }()
         
-        let settings = Settings(favoriteBreweryIDs: [])
+        let settings = Settings(favoriteBreweries: [])
         
         let testFavorite = Brewery.previewEastCliff
         
         // Starting conditions
-        #expect(settings.favoriteBreweryIDs.isEmpty)
+        #expect(settings.favoriteBreweries.isEmpty)
         
-        settings.addFavorite(id: testFavorite.id, modelContext: sharedModelContainer.mainContext)
+        settings.addFavorite(id: testFavorite.id, name: testFavorite.name, modelContext: sharedModelContainer.mainContext)
         
-        #expect(settings.favoriteBreweryIDs.count == 1)
-        let favoriteID = try #require(settings.favoriteBreweryIDs.first)
-        #expect(favoriteID == testFavorite.id)
+        #expect(settings.favoriteBreweries.count == 1)
+        let firstFavorite = try #require(settings.favoriteBreweries.first)
+        #expect(firstFavorite.id == testFavorite.id)
+        #expect(firstFavorite.name == testFavorite.name)
         
         settings.removeFavorite(id: testFavorite.id, modelContext: sharedModelContainer.mainContext)
         
-        #expect(settings.favoriteBreweryIDs.isEmpty)
+        #expect(settings.favoriteBreweries.isEmpty)
     }
 }

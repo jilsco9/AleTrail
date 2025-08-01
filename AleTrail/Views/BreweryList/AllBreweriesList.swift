@@ -13,7 +13,6 @@ struct AllBreweriesList: View {
     
     let settings: Settings
     
-    @State var selectedBrewery: Brewery?
     @State var lastIDToInitiateLoad: String?
     
     func updateBreweryList(initialFetch: Bool) async {
@@ -43,7 +42,6 @@ struct AllBreweriesList: View {
                 }
             }
             
-            
             if appModel.loading {
                 ProgressView()
                     .accessibility(AccessibilityAttributes.BreweryList.progressIndicator)
@@ -59,9 +57,13 @@ struct AllBreweriesList: View {
                 }
             }
         }
-        .navigationTitle("All Breweries")
         .accessibilityElement(children: .contain)
         .accessibility(AccessibilityAttributes.BreweryList.list)
+        .task {
+            if appModel.breweries.isEmpty {
+                await updateBreweryList(initialFetch: true)
+            }
+        }
         .refreshable {
             Task {
                 await updateBreweryList(initialFetch: true)
@@ -80,11 +82,6 @@ struct AllBreweriesList: View {
                 .accessibility(AccessibilityAttributes.BreweryList.noBreweriesView)
             }
         }
-        .onChange(of: settings.breweryListDisplayMode, initial: true) {
-            Task {
-                await updateBreweryList(initialFetch: true)
-            }
-        }
         .alert(isPresented: $appModel.hasBreweryServiceError, error: appModel.breweryServiceError, actions: { _ in
             Button("OK") {
                 appModel.breweryServiceError = nil
@@ -98,7 +95,7 @@ struct AllBreweriesList: View {
 #Preview {
     @Previewable @State var appModel = AleTrailAppModel.preview
     NavigationStack {
-        BreweryList(settings: .preview)
+        AllBreweriesList(settings: .preview)
     }
     .environment(appModel)
     .modelContainer(for: Settings.self, inMemory: true)

@@ -170,7 +170,7 @@ final class BreweryDetailUITests: XCTestCase {
         )
         
         // Navigate to Favorites list
-        app.buttons["BreweryList.favoritesButton"].tap()
+        app.buttons["Favorite Breweries"].tap()
         
         // Confirm favorites list is empty
         let emptyFavoritesListExists = app.otherElements["BreweryList.noBreweriesView"].waitForExistence(timeout: 1)
@@ -180,7 +180,7 @@ final class BreweryDetailUITests: XCTestCase {
         )
         
         // Navigate back to All breweries list and tap Union Brewing
-        app.buttons["BreweryList.allBreweriesButton"].tap()
+        app.buttons["All Breweries"].tap()
         let unionBrewingNavigationLink = app.buttons["BreweryList.breweryListItem.6f07acc5-3db8-4380-b30f-98d256184c56"]
         unionBrewingNavigationLink.tap()
         
@@ -199,7 +199,7 @@ final class BreweryDetailUITests: XCTestCase {
         
         app.buttons["BackButton"].firstMatch.tap()
         
-        app.buttons["BreweryList.favoritesButton"].firstMatch.tap()
+        app.buttons["Favorite Breweries"].firstMatch.tap()
         
         // Confirm Union Brewing list item and tap
         unionBrewingNavigationLink.tap()

@@ -22,18 +22,15 @@ struct ContentView: View {
     
     var body: some View {
         
-        
-        if let loadedSettings = settings.first {
-            NavigationStack {
-                BreweryListDisplayModeNavigation(settings: loadedSettings)
+            if let loadedSettings = settings.first {
+                BreweryListNavigation(settings: loadedSettings)
+            } else {
+                ProgressView("Initializing app...")
+                    .onAppear {
+                        createSettingsIfNeeded()
+                    }
             }
-            
-        } else {
-            ProgressView("Initializing app...")
-                .onAppear {
-                    createSettingsIfNeeded()
-                }
-        }
+
     }
 }
 

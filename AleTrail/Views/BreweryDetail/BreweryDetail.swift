@@ -98,6 +98,7 @@ struct BreweryDetail: View {
                 .accessibility(AccessibilityAttributes.BreweryDetail.favoriteButton(favorited: isFavorite))
             }
         }
+        .toolbar(.hidden, for: .tabBar)
     }
 }
 

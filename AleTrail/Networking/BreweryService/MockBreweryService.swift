@@ -38,7 +38,8 @@ actor MockBreweryService: BreweryService {
         if let brewery = breweryList.first(where: { $0.id == id }) {
             return brewery
         } else {
-            throw BreweryServiceError.invalidEndpoint // TODO: - Update
+            /// Just return a default brewery
+            return await Brewery.previewUnion
         }
     }
 }

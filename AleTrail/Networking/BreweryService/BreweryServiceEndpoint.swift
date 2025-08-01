@@ -13,10 +13,9 @@ enum BreweryServiceEndpoint {
     static let maxIDs: Int = 6
     
     case list(page: Int)
-    // Note: Funcitonality cut for scope
+    // Functionality cut for scope
     case search(city: String, page: Int)
-    case favorites(ids: [String], page: Int)
-    case singleBrewery(id: String)
+    case getBrewery(id: String)
     
     var queryItems: [URLQueryItem] {
         switch self {
@@ -25,33 +24,26 @@ enum BreweryServiceEndpoint {
                 BreweryServiceQueryItem.page(page).queryItem,
                 BreweryServiceQueryItem.perPage(Self.perPage).queryItem
             ]
-        // Note: Funcitonality cut for scope
+            // Note: Funcitonality cut for scope
         case .search(let city, let page):
             [
                 BreweryServiceQueryItem.city(city).queryItem,
                 BreweryServiceQueryItem.page(page).queryItem,
                 BreweryServiceQueryItem.perPage(Self.perPage).queryItem
             ]
-        case .favorites(let ids, let page):
-            [
-                BreweryServiceQueryItem.ids(ids).queryItem,
-                BreweryServiceQueryItem.page(page).queryItem,
-                BreweryServiceQueryItem.perPage(Self.perPage).queryItem
-            ]
-        case .singleBrewery:
+        case .getBrewery:
             []
         }
     }
     
     var appendedPath: String? {
         switch self {
-        case .singleBrewery(let id):
-            "/\(id)"
+        case .getBrewery(let id):
+            return "/\(id)"
             
         case .list,
-                .search,
-                .favorites:
-            nil
+                .search:
+            return nil
         }
     }
     

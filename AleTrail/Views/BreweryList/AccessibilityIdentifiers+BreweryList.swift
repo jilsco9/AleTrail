@@ -10,8 +10,8 @@ import Foundation
 extension AccessibilityAttributes {
     enum BreweryList: Accessibility {
         case list
-        case allBreweriesButton(selected: Bool)
-        case favoritesButton(selected: Bool)
+        case allBreweriesButton //(selected: Bool)
+        case favoritesButton //(selected: Bool)
         case progressIndicator
         case breweryListItem(id: String)
         case noBreweriesView
@@ -38,31 +38,33 @@ extension AccessibilityAttributes {
         }
         
         var accessibilityLabel: String? {
-            switch self {
-            case .allBreweriesButton(let selected):
-                return "All Breweries \(selected ? "Selected" : "Not selected")"
-            case .favoritesButton(let selected):
-                return "Favorite Breweries \(selected ? "Selected" : "Not selected")"
-            case .list,
-                    .progressIndicator,
-                    .breweryListItem,
-                    .noBreweriesView:
-                return nil
-            }
+            nil
+//            switch self {
+//            case .allBreweriesButton(let selected):
+//                return "All Breweries \(selected ? "Selected" : "Not selected")"
+//            case .favoritesButton(let selected):
+//                return "Favorite Breweries \(selected ? "Selected" : "Not selected")"
+//            case .list,
+//                    .progressIndicator,
+//                    .breweryListItem,
+//                    .noBreweriesView:
+//                return nil
+//            }
         }
         
         var accessibilityHint: String? {
-            switch self {
-            case .allBreweriesButton(let selected):
-                return selected ? nil : "Tap to show all breweries."
-            case .favoritesButton(let selected):
-                return selected ? nil : "Tap to show favorite breweries."
-            case .list,
-                    .progressIndicator,
-                    .breweryListItem,
-                    .noBreweriesView:
-                return nil
-            }
+            nil
+//            switch self {
+//            case .allBreweriesButton(let selected):
+//                return selected ? nil : "Tap to show all breweries."
+//            case .favoritesButton(let selected):
+//                return selected ? nil : "Tap to show favorite breweries."
+//            case .list,
+//                    .progressIndicator,
+//                    .breweryListItem,
+//                    .noBreweriesView:
+//                return nil
+//            }
         }
     }
 }

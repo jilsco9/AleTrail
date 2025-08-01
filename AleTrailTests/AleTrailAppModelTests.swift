@@ -131,55 +131,6 @@ struct AleTrailAppModelTests {
         #expect(appModel.allBreweriesHaveBeenLoaded)
         #expect(appModel.lastLoadedBreweryPage == 2)
     }
-    
-    // MARK: Favorites
-    // Initial fetch
-    @Test("Breweries by ID - Initial Fetch") func initialBreweryFetchByID() async throws {
-        let testModels = Brewery.previewList
-        let favoriteIDs = Brewery.previewFavoritesList.map { $0.id }
-
-        let appModel = AleTrailAppModel(
-            breweryService: MockBreweryService(breweryList: testModels)
-        )
-        
-        // Starting conditions:
-        #expect(appModel.breweries.isEmpty)
-        #expect(appModel.allBreweriesHaveBeenLoaded == false)
-        #expect(appModel.lastLoadedBreweryPage == 1)
-        
-        await appModel.getBreweriesByID(favoriteIDs, initialFetch: true)
-        
-        #expect(appModel.breweries.count > 0)
-        #expect(appModel.allBreweriesHaveBeenLoaded)
-        #expect(appModel.lastLoadedBreweryPage == 1)
-        
-        // Do another initial fetch to ensure page resets to 1
-        await appModel.getBreweriesByID(favoriteIDs, initialFetch: true)
-        
-        #expect(appModel.breweries.count > 0)
-        #expect(appModel.allBreweriesHaveBeenLoaded)
-        #expect(appModel.lastLoadedBreweryPage == 1)
-    }
-    
-    @Test("Breweries by ID - Empty Favorites List") func fetchEmptyBreweryListByID() async throws {
-        let testModels = Brewery.previewList
-        let favoriteIDs: [String] = []
-
-        let appModel = AleTrailAppModel(
-            breweryService: MockBreweryService(breweryList: testModels)
-        )
-        
-        // Starting conditions:
-        #expect(appModel.breweries.isEmpty)
-        #expect(appModel.allBreweriesHaveBeenLoaded == false)
-        #expect(appModel.lastLoadedBreweryPage == 1)
-        
-        await appModel.getBreweriesByID(favoriteIDs, initialFetch: true)
-        
-        #expect(appModel.breweries.isEmpty)
-        #expect(appModel.allBreweriesHaveBeenLoaded)
-        #expect(appModel.lastLoadedBreweryPage == 1)
-    }
 }
 
 private extension AleTrailAppModelTests {

@@ -9,15 +9,10 @@ import Foundation
 
 protocol BreweryService {
     func getBreweries(
-        byIDs ids: [String],
         page: Int
     ) async throws(BreweryServiceError) -> [Brewery]
     
-    func getBreweries(
-        page: Int
-    ) async throws(BreweryServiceError) -> [Brewery]
-    
-    // Note: Funcitonality cut for scope
+    // Note: Functionality cut for scope
     func getBreweries(
         byCity city: String,
         page: Int

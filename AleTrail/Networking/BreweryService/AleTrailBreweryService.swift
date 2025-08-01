@@ -40,42 +40,7 @@ actor AleTrailBreweryService: BreweryService {
             throw .networkingError(error)
         }
     }
-    
-    /// Get a list (one page) of breweries identified by ID.
-    ///
-    /// Results from the service are paginated, with the max results per page
-    ///  identified by ``BreweryServiceEndpoint/perPage``.
-    ///
-    /// - Parameters:
-    ///   - ids: Array of brewery IDs
-    ///   - page: 1-based index of paginated results
-    /// - Returns: Array of Brewery models for the given page
-    /// - Throws: Brewery service error -- ``BreweryServiceError/invalidEndpoint``
-    ///   if the URL cannot be created or ``BreweryServiceError/networkingError(_:)``
-    ///   with an associated ``NetworkingError``
-    func getBreweries(
-        byIDs ids: [String],
-        page: Int = 1
-    ) async throws(BreweryServiceError) -> [Brewery] {
-        
-        guard await ids.count <= BreweryServiceEndpoint.maxIDs else {
-            throw BreweryServiceError.tooManyIDs
-        }
-        
-        let url = try await BreweryServiceEndpoint.favorites(
-            ids: ids,
-            page: page
-        ).getURL()
-        
-        do {
-            return try await network.sendGetRequest(
-                to: url
-            )
-        } catch {
-            throw .networkingError(error)
-        }
-    }
-    
+
     /// Get a list (one page) of breweries by city.
     ///
     /// Results from the service are paginated, with the max results per page
@@ -107,12 +72,18 @@ actor AleTrailBreweryService: BreweryService {
         }
     }
     
-//    https://api.openbrewerydb.org/v1/breweries/
+    /// Get a brewery identified by ID.
+    ///
+    /// - Parameters:
+    ///   - id: Brewery ID
+    /// - Returns: Array of Brewery models for the given page
+    /// - Throws: Brewery service error -- ``BreweryServiceError/invalidEndpoint``
+    ///   if the URL cannot be created or ``BreweryServiceError/networkingError(_:)``
+    ///   with an associated ``NetworkingError``
     func getBrewery(
         id: String
     ) async throws(BreweryServiceError) -> Brewery {
-        
-        let url = try await BreweryServiceEndpoint.singleBrewery(id: id).getURL()
+        let url = try await BreweryServiceEndpoint.getBrewery(id: id).getURL()
         
         do {
             return try await network.sendGetRequest(
