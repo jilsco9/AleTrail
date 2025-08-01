@@ -34,8 +34,7 @@ actor AleTrailBreweryService: BreweryService {
         
         do {
             return try await network.sendGetRequest(
-                to: url,
-                type: [Brewery].self
+                to: url
             )
         } catch {
             throw .networkingError(error)
@@ -70,8 +69,7 @@ actor AleTrailBreweryService: BreweryService {
         
         do {
             return try await network.sendGetRequest(
-                to: url,
-                type: [Brewery].self
+                to: url
             )
         } catch {
             throw .networkingError(error)
@@ -102,8 +100,23 @@ actor AleTrailBreweryService: BreweryService {
         
         do {
             return try await network.sendGetRequest(
-                to: url,
-                type: [Brewery].self
+                to: url
+            )
+        } catch {
+            throw .networkingError(error)
+        }
+    }
+    
+//    https://api.openbrewerydb.org/v1/breweries/
+    func getBrewery(
+        id: String
+    ) async throws(BreweryServiceError) -> Brewery {
+        
+        let url = try await BreweryServiceEndpoint.singleBrewery(id: id).getURL()
+        
+        do {
+            return try await network.sendGetRequest(
+                to: url
             )
         } catch {
             throw .networkingError(error)

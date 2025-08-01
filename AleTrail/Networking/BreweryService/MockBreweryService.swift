@@ -8,6 +8,7 @@
 import Foundation
 
 actor MockBreweryService: BreweryService {
+    
     var breweryList: [Brewery]
     
     init(breweryList: [Brewery]) {
@@ -30,6 +31,14 @@ actor MockBreweryService: BreweryService {
     func getBreweries(byCity city: String, page: Int) async throws(BreweryServiceError) -> [Brewery] {
         return breweryList.filter { brewery in
             brewery.city?.lowercased().contains(city.lowercased()) ?? false
+        }
+    }
+    
+    func getBrewery(id: String) async throws(BreweryServiceError) -> Brewery {
+        if let brewery = breweryList.first(where: { $0.id == id }) {
+            return brewery
+        } else {
+            throw BreweryServiceError.invalidEndpoint // TODO: - Update
         }
     }
 }

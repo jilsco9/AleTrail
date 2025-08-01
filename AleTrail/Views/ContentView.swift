@@ -11,25 +11,28 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var settings: [Settings]
-        
+    
     func createSettingsIfNeeded() {
         if settings.first == nil {
             debugPrint("No previous settings found. Creating settings model.")
-            let newFavoriteBreweries = Settings(favoriteBreweryIDs: [])
+            let newFavoriteBreweries = Settings(favoriteBreweries: [])
             modelContext.insert(newFavoriteBreweries)
         }
     }
     
     var body: some View {
-        NavigationStack {
-            if let loadedSettings = settings.first {
+        
+        
+        if let loadedSettings = settings.first {
+            NavigationStack {
                 BreweryListDisplayModeNavigation(settings: loadedSettings)
-            } else {
-                ProgressView("Initializing app...")
             }
-        }
-        .onAppear {
-            createSettingsIfNeeded()
+            
+        } else {
+            ProgressView("Initializing app...")
+                .onAppear {
+                    createSettingsIfNeeded()
+                }
         }
     }
 }

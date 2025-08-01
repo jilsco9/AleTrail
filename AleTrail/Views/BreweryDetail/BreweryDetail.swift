@@ -15,7 +15,7 @@ struct BreweryDetail: View {
     let settings: Settings
     
     var isFavorite: Bool {
-        settings.favoriteBreweryIDs.contains(brewery.id)
+        settings.containsFavoriteBrewery(brewery)
     }
     
     var locationSummaryComponents: [String] {
@@ -85,7 +85,13 @@ struct BreweryDetail: View {
                     isFavorite ? "Remove Favorite" : "Add Favorite",
                     systemImage: isFavorite ? "heart.fill" : "heart",
                     action: {
-                        isFavorite ? settings.removeFavorite(id: brewery.id, modelContext: modelContext) : settings.addFavorite(id: brewery.id, modelContext: modelContext)
+                        isFavorite ? settings.removeFavorite(
+                            id: brewery.id, modelContext: modelContext
+                        ) : settings.addFavorite(
+                            id: brewery.id,
+                            name: brewery.name,
+                            modelContext: modelContext
+                        )
                     }
                 )
                 .tint(.accent)

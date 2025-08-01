@@ -22,6 +22,15 @@ enum BreweryListDisplayMode: String, Identifiable, CaseIterable {
         rawValue.capitalized
     }
     
+    var navigationTitle: String {
+        switch self {
+        case .all:
+            "All Breweries"
+        case .favorites:
+            "Favorite Breweries"
+        }
+    }
+    
     var systemImage: String {
         switch self {
         case .all:

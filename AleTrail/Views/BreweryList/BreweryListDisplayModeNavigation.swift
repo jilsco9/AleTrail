@@ -19,7 +19,6 @@ struct BreweryListDisplayModeNavigation: View {
                 BreweryListDisplayModeButtonContainer(settings: settings)
             }
         }
-        .navigationTitle("Breweries")
     }
 }
 

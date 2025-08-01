@@ -16,6 +16,7 @@ enum BreweryServiceEndpoint {
     // Note: Funcitonality cut for scope
     case search(city: String, page: Int)
     case favorites(ids: [String], page: Int)
+    case singleBrewery(id: String)
     
     var queryItems: [URLQueryItem] {
         switch self {
@@ -37,12 +38,30 @@ enum BreweryServiceEndpoint {
                 BreweryServiceQueryItem.page(page).queryItem,
                 BreweryServiceQueryItem.perPage(Self.perPage).queryItem
             ]
+        case .singleBrewery:
+            []
+        }
+    }
+    
+    var appendedPath: String? {
+        switch self {
+        case .singleBrewery(let id):
+            "/\(id)"
+            
+        case .list,
+                .search,
+                .favorites:
+            nil
         }
     }
     
     func getURLComponents() throws(BreweryServiceError) -> URLComponents {
         guard var urlComponents = URLComponents(string: Self.basePath) else {
             throw .invalidEndpoint
+        }
+        
+        if let appendedPath {
+            urlComponents.path += appendedPath
         }
         
         urlComponents.queryItems = queryItems

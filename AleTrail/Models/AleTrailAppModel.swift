@@ -136,4 +136,26 @@ import Foundation
         
         loading = false
     }
+    
+    func getBreweryByID(_ id: String) async throws(BreweryServiceError) -> Brewery {
+        return try await breweryService.getBrewery(id: id)
+        
+//        do {
+//            var result: [Brewery]
+//            return try await breweryService.getBreweries(byIDs: ids, page: lastLoadedBreweryPage)
+//
+//        } catch {
+//            debugPrint("Error fetching brewery list by IDs: \(error.errorDescription ?? "BreweryServiceError")")
+//            allBreweriesHaveBeenLoaded = true
+//            breweryServiceError = error
+//            hasBreweryServiceError = true
+//            
+//            // Set page back one if required
+//            if lastLoadedBreweryPage > 1 {
+//                lastLoadedBreweryPage -= 1
+//            }
+//        }
+//        
+//        loading = false
+    }
 }

@@ -22,4 +22,6 @@ protocol BreweryService {
         byCity city: String,
         page: Int
     ) async throws(BreweryServiceError) -> [Brewery]
+    
+    func getBrewery(id: String) async throws(BreweryServiceError) -> Brewery
 }

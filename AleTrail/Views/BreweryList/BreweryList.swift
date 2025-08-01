@@ -16,93 +16,27 @@ struct BreweryList: View {
     @State var selectedBrewery: Brewery?
     @State var lastIDToInitiateLoad: String?
     
-    func updateBreweryList(displayMode: String, initialFetch: Bool) async {
-        switch settings.breweryListDisplayMode {
-        case BreweryListDisplayMode.all.rawValue:
-            await appModel.getBreweryList(initialFetch: initialFetch)
-        case BreweryListDisplayMode.favorites.rawValue:
-            await appModel.getBreweriesByID(
-                Array(settings.favoriteBreweryIDs),
-                initialFetch: initialFetch
-            )
-        default:
-            debugPrint("Unexpected display mode type: \(settings.breweryListDisplayMode). Resetting display mode to all.")
-            settings.breweryListDisplayMode = BreweryListDisplayMode.all.rawValue
+    // TODO: - Not needed if we convert this to
+    // use tab view.
+    var listMode: BreweryListDisplayMode {
+        if let breweryListDisplayMode = BreweryListDisplayMode(rawValue: settings.breweryListDisplayMode) {
+            return breweryListDisplayMode
+        } else {
+            debugPrint("Got an unexpected list display mode value from settings.")
+            debugPrint("Resetting display mode to .all")
+            let allBreweriesMode = BreweryListDisplayMode.all
+            settings.breweryListDisplayMode = allBreweriesMode.rawValue
+            return allBreweriesMode
         }
-        
-        lastIDToInitiateLoad = nil
     }
     
     var body: some View {
-        @Bindable var appModel = appModel
-        List {
-            ForEach(appModel.breweries) { brewery in
-                NavigationLink(brewery.name) {
-                    BreweryDetail(
-                        brewery: brewery,
-                        settings: settings
-                    )
-                }
-                .accessibility(AccessibilityAttributes.BreweryList.breweryListItem(id: brewery.id))
-                .onScrollVisibilityChange(threshold: 0.5) { isVisible in
-                    if isVisible, brewery.id == appModel.lastLoadedBreweryID, brewery.id != lastIDToInitiateLoad {
-                        lastIDToInitiateLoad = brewery.id
-                        Task {
-                            await updateBreweryList(displayMode: settings.breweryListDisplayMode, initialFetch: false)
-                        }
-                    }
-                }
-            }
-            
-            
-            if appModel.loading {
-                ProgressView()
-                    .accessibility(AccessibilityAttributes.BreweryList.progressIndicator)
-            } else if appModel.hasErrorOnPageLoad {
-                VStack {
-                    Text("An error occurred loading more breweries.")
-                    Button("Try again") {
-                        Task {
-                            appModel.allBreweriesHaveBeenLoaded = false
-                            await updateBreweryList(displayMode: settings.breweryListDisplayMode, initialFetch: false)
-                        }
-                    }
-                }
-            }
+        switch listMode {
+        case .all:
+            AllBreweriesList(settings: settings)
+        case .favorites:
+            FavoriteBreweriesList(settings: settings)
         }
-        .accessibilityElement(children: .contain)
-        .accessibility(AccessibilityAttributes.BreweryList.list)
-        .refreshable {
-            Task {
-                await updateBreweryList(displayMode: settings.breweryListDisplayMode, initialFetch: true)
-            }
-        }
-        .overlay {
-            if !appModel.loading,
-                appModel.allBreweriesHaveBeenLoaded,
-                appModel.breweries.isEmpty,
-               let displayMode = BreweryListDisplayMode(rawValue: settings.breweryListDisplayMode) {
-                    ContentUnavailableView {
-                        Label("No Breweries", systemImage: displayMode.systemImage)
-                    } description: {
-                        Text(displayMode.noResultsMessage)
-                    }
-                    .accessibilityElement(children: .contain)
-                    .accessibility(AccessibilityAttributes.BreweryList.noBreweriesView)
-                }
-        }
-        .onChange(of: settings.breweryListDisplayMode, initial: true) {
-            Task {
-                await updateBreweryList(displayMode: settings.breweryListDisplayMode, initialFetch: true)
-            }
-        }
-        .alert(isPresented: $appModel.hasBreweryServiceError, error: appModel.breweryServiceError, actions: { _ in
-            Button("OK") {
-                appModel.breweryServiceError = nil
-            }
-        }, message: { error in
-            Text(error.recoverySuggestion ?? "Please try again.")
-        })
     }
 }
 

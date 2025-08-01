@@ -11,13 +11,18 @@ import SwiftData
 ///
 /// Persists user settings such as brewery IDs marked as favorites
 /// and last viewed brewery list display mode
+@MainActor
 @Model final class Settings: Identifiable {
-    var favoriteBreweryIDs: Set<String>
+    var favoriteBreweries: [BreweryFavorite]
     var breweryListDisplayMode: String
     
-    init(favoriteBreweryIDs: Set<String>, listDisplayMode: BreweryListDisplayMode = .all) {
-        self.favoriteBreweryIDs = favoriteBreweryIDs
+    init(favoriteBreweries: [BreweryFavorite], listDisplayMode: BreweryListDisplayMode = .all) {
+        self.favoriteBreweries = favoriteBreweries
         self.breweryListDisplayMode = listDisplayMode.rawValue
+    }
+    
+    func containsFavoriteBrewery(_ brewery: Brewery) -> Bool {
+        return favoriteBreweries.contains { $0.id == brewery.id }
     }
     
     func removeFavorite(
@@ -25,16 +30,18 @@ import SwiftData
         modelContext: ModelContext
     ) {
         debugPrint("Removing \(id) from favorites")
-        favoriteBreweryIDs.remove(id)
-        try? modelContext.save()
+        favoriteBreweries.removeAll(where: { $0.id == id })
+        try? modelContext.save() // Might be able to remove this, now that it's main actor isolated?
     }
     
     func addFavorite(
         id: String,
+        name: String,
         modelContext: ModelContext
     ) {
         debugPrint("Adding \(id) to favorites")
-        favoriteBreweryIDs.insert(id)
-        try? modelContext.save()
+        let newFavorite = BreweryFavorite(id: id, name: name)
+        favoriteBreweries.append(newFavorite)
+        try? modelContext.save() // Might be able to remove this, now that it's main actor isolated?
     }
 }

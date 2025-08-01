@@ -8,11 +8,10 @@
 import Foundation
 
 actor AleTrailNetworking {
-    func sendGetRequest<T: Decodable>(to url: URL, type: T.Type = T.self) async throws(NetworkingError) -> T {
+    func sendGetRequest<T: Decodable>(to url: URL) async throws(NetworkingError) -> T {
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
-            let decodedResponse = try JSONDecoder().decode(T.self, from: data)
-            return decodedResponse
+            return try JSONDecoder().decode(T.self, from: data)
         } catch let error as DecodingError {
             throw .decodingError(error)
         } catch let error as URLError {
@@ -22,4 +21,3 @@ actor AleTrailNetworking {
         }
     }
 }
-
