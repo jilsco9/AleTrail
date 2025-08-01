@@ -52,7 +52,7 @@ struct BreweryDetailsLoadingView: View {
                 /// and/or navigation back to favorites list on dismissing alert.
                 ContentUnavailableView(
                     "Details not found",
-                    image: "exclamationmark.triangle",
+                    systemImage: "exclamationmark.triangle",
                     description: Text("Return to favorites list and try again.")
                 )
             }
@@ -63,7 +63,7 @@ struct BreweryDetailsLoadingView: View {
             error: error,
             actions: { _ in
                 Button("OK") {
-                    error = nil
+                    /// Default dismiss functionality
                 }
             }, message: { error in
                 Text(error.recoverySuggestion ?? "Please try again.")

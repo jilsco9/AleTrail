@@ -84,7 +84,7 @@ struct AllBreweriesList: View {
         }
         .alert(isPresented: $appModel.hasBreweryServiceError, error: appModel.breweryServiceError, actions: { _ in
             Button("OK") {
-                appModel.breweryServiceError = nil
+                /// Default dismiss functionality
             }
         }, message: { error in
             Text(error.recoverySuggestion ?? "Please try again.")
