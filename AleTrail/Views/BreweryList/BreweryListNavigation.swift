@@ -13,29 +13,27 @@ struct BreweryListNavigation: View {
     var body: some View {
         @Bindable var settings = settings
         TabView(selection: $settings.breweryListDisplayMode) {
-            Tab(value: BreweryListDisplayMode.all.rawValue, content: {
+            Tab(
+                BreweryListDisplayMode.all.navigationTitle,
+                systemImage: BreweryListDisplayMode.all.systemImage,
+                value: BreweryListDisplayMode.all.rawValue
+            ) {
                 NavigationStack {
                     AllBreweriesList(settings: settings)
                         .navigationTitle(BreweryListDisplayMode.all.navigationTitle)
                 }
-            }, label: {
-                Label(
-                    BreweryListDisplayMode.all.navigationTitle,
-                    systemImage: BreweryListDisplayMode.all.systemImage
-                )
-            })
+            }
             
-            Tab(value: BreweryListDisplayMode.favorites.rawValue, content: {
+            Tab(
+                BreweryListDisplayMode.favorites.navigationTitle,
+                systemImage: BreweryListDisplayMode.favorites.systemImage,
+                value: BreweryListDisplayMode.favorites.rawValue
+            ) {
                 NavigationStack {
                     FavoriteBreweriesList(settings: settings)
                         .navigationTitle(BreweryListDisplayMode.favorites.navigationTitle)
                 }
-            }, label: {
-                Label(
-                    BreweryListDisplayMode.favorites.navigationTitle,
-                    systemImage: BreweryListDisplayMode.favorites.systemImage
-                )
-            })
+            }
         }
     }
 }

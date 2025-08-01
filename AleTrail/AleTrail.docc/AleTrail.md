@@ -41,14 +41,12 @@ If a user taps one of the breweries in the list, the app presents a brewery deta
 screen with information like the brewery's name, brewery type, location, and
 contact information.
 
-This brewery detail screen also has a button to allow the user to add a brewery
-to their favorites list. If they navigate back to the previous screen,
-and tap the favorites list navigation button, they will see the list of breweries
+The brewery detail screen also has a button to allow the user to add a brewery
+to their favorites list. If they navigate back to the list screen,
+and tap the favorites list tab button, they will see the list of breweries
 they have favorited from brewery detail.
 
-If the user closes and relaunches the app, they will find that they see whichever
-list (all or favorites) that they were currently viewing. They will also find
-that their favorites list persists.
+Favorite breweries persist between app launches.
 
 ### Architecture
 
@@ -77,7 +75,7 @@ robust data model will cause excessive screen re-loads.
 
 The other functional model worth mentioning in the app is Settings, which acts
 as a persistent model between launches. It uses SwiftData to persist data like
-favorited brewery IDs and the latest viewed Brewery list mode.
+favorited breweries and the latest viewed Brewery list mode.
 
 
 ## Topics

@@ -41,8 +41,6 @@ I also leveraged LocalizedError to allow the platform
 to display the default alert, with an OK button. I would likely add more detailed error
 handling, with a title, message, and even retry actions (depending on the specific error).
 
-### Eliminate duplicate logic / repeated code
-
 ### Improve performance of brewery detail navigation
 *BreweryList, BreweryDetail*
 One of the last features I added was the brewery detail map.
