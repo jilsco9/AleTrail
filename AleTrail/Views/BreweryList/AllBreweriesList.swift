@@ -50,8 +50,8 @@ struct AllBreweriesList: View {
                     Text("An error occurred loading more breweries.")
                     Button("Try again") {
                         Task {
-                            appModel.allBreweriesHaveBeenLoaded = false
-                            await updateBreweryList(initialFetch: false)
+                            await appModel.retryFailedPageFetch()
+                            lastIDToInitiateLoad = nil
                         }
                     }
                 }

@@ -9,16 +9,23 @@ import Foundation
 import Testing
 @testable import AleTrail
 
+// TODO: - Move out
+struct TestError: Error {
+    
+}
+
 @MainActor
 struct AleTrailAppModelTests {
     
     // MARK: Get Brewery List
     // Initial fetch
-    @Test("All Breweries - Initial Fetch") func initialBreweryFetch() async throws {
+    @Test("All Breweries - Initial Fetch")
+    func initialBreweryFetch() async throws {
         let testModels = Brewery.previewList
+        let breweryService = TestBreweryService()
 
         let appModel = AleTrailAppModel(
-            breweryService: MockBreweryService(breweryList: testModels)
+            breweryService: breweryService
         )
         
         // Starting conditions:
@@ -26,12 +33,14 @@ struct AleTrailAppModelTests {
         #expect(appModel.allBreweriesHaveBeenLoaded == false)
         #expect(appModel.lastLoadedBreweryPage == 1)
         
+        await breweryService.addResponse(.breweryList(.success(testModels)))
         await appModel.getBreweryList(initialFetch: true)
         
         #expect(appModel.breweries.count > 0)
         #expect(appModel.allBreweriesHaveBeenLoaded)
         #expect(appModel.lastLoadedBreweryPage == 1)
         
+        await breweryService.addResponse(.breweryList(.success(testModels)))
         // Do another initial fetch to ensure page resets to 1
         await appModel.getBreweryList(initialFetch: true)
         
@@ -41,11 +50,13 @@ struct AleTrailAppModelTests {
     }
     
     // Empty result
-    @Test("All Breweries - Empty Brewery List") func fetchEmptyBreweryList() async throws {
+    @Test("All Breweries - Empty Brewery List")
+    func fetchEmptyBreweryList() async throws {
         let testModels: [Brewery] = []
+        let breweryService = TestBreweryService()
 
         let appModel = AleTrailAppModel(
-            breweryService: MockBreweryService(breweryList: testModels)
+            breweryService: breweryService
         )
         
         // Starting conditions:
@@ -53,6 +64,7 @@ struct AleTrailAppModelTests {
         #expect(appModel.allBreweriesHaveBeenLoaded == false)
         #expect(appModel.lastLoadedBreweryPage == 1)
         
+        await breweryService.addResponse(.breweryList(.success(testModels)))
         await appModel.getBreweryList(initialFetch: true)
         
         #expect(appModel.breweries.isEmpty)
@@ -61,38 +73,42 @@ struct AleTrailAppModelTests {
     }
     
     // Two full pages
-    @Test("All Breweries - Two Full Brewery List Pages") func fetchTwoPagesOfBreweries() async throws {
+    @Test("All Breweries - Two Full Brewery List Pages")
+    func fetchTwoPagesOfBreweries() async throws {
         
         let testModelsPage1: [Brewery] = createUniqueBreweries(count: 50)
         let testModelsPage2: [Brewery] = createUniqueBreweries(count: 50)
+        let testModelsPage3: [Brewery] = []
         
-        let mockBreweryService = MockBreweryService(breweryList: testModelsPage1)
+        let breweryService = TestBreweryService()
 
         let appModel = AleTrailAppModel(
-            breweryService: mockBreweryService
+            breweryService: breweryService
         )
         
-        // Starting conditions:
+        // Starting conditions
         #expect(appModel.breweries.isEmpty)
         #expect(appModel.allBreweriesHaveBeenLoaded == false)
         #expect(appModel.lastLoadedBreweryPage == 1)
         
+        // First page fetch
+        await breweryService.addResponse(.breweryList(.success(testModelsPage1)))
         await appModel.getBreweryList(initialFetch: true)
         
         #expect(appModel.breweries.count == 50)
         #expect(appModel.allBreweriesHaveBeenLoaded == false)
         #expect(appModel.lastLoadedBreweryPage == 1)
         
-        await mockBreweryService.updateBreweryList(testModelsPage2)
-        
+        // Second page fetch
+        await breweryService.addResponse(.breweryList(.success(testModelsPage2)))
         await appModel.getBreweryList(initialFetch: false)
         
         #expect(appModel.breweries.count == 100)
         #expect(appModel.allBreweriesHaveBeenLoaded == false)
         #expect(appModel.lastLoadedBreweryPage == 2)
         
-        await mockBreweryService.updateBreweryList([])
-        
+        // Third page fetch
+        await breweryService.addResponse(.breweryList(.success(testModelsPage3)))
         await appModel.getBreweryList(initialFetch: false)
         
         #expect(appModel.breweries.count == 100)
@@ -101,15 +117,16 @@ struct AleTrailAppModelTests {
     }
     
     // One and a half pages
-    @Test("All Breweries - One and a Half Brewery List Pages") func fetchPartialPageBreweries() async throws {
+    @Test("All Breweries - One and a Half Brewery List Pages")
+    func fetchPartialPageBreweries() async throws {
         
         let testModelsPage1: [Brewery] = createUniqueBreweries(count: 50)
         let testModelsPage2: [Brewery] = createUniqueBreweries(count: 25)
         
-        let mockBreweryService = MockBreweryService(breweryList: testModelsPage1)
+        let breweryService = TestBreweryService()
 
         let appModel = AleTrailAppModel(
-            breweryService: mockBreweryService
+            breweryService: breweryService
         )
         
         // Starting conditions:
@@ -117,19 +134,108 @@ struct AleTrailAppModelTests {
         #expect(appModel.allBreweriesHaveBeenLoaded == false)
         #expect(appModel.lastLoadedBreweryPage == 1)
         
+        await breweryService.addResponse(.breweryList(.success(testModelsPage1)))
         await appModel.getBreweryList(initialFetch: true)
         
         #expect(appModel.breweries.count == 50)
         #expect(appModel.allBreweriesHaveBeenLoaded == false)
         #expect(appModel.lastLoadedBreweryPage == 1)
         
-        await mockBreweryService.updateBreweryList(testModelsPage2)
+        await breweryService.addResponse(.breweryList(.success(testModelsPage2)))
         
         await appModel.getBreweryList(initialFetch: false)
         
         #expect(appModel.breweries.count == 75)
         #expect(appModel.allBreweriesHaveBeenLoaded)
         #expect(appModel.lastLoadedBreweryPage == 2)
+    }
+    
+    
+    @Test("All Breweries - Initial Fetch Error")
+    func initialFetchError() async throws {
+        let breweryService = TestBreweryService()
+        let testModels = Brewery.previewList
+
+        let appModel = AleTrailAppModel(
+            breweryService: breweryService
+        )
+        
+        // Starting conditions:
+        #expect(appModel.breweries.isEmpty)
+        #expect(appModel.allBreweriesHaveBeenLoaded == false)
+        #expect(appModel.lastLoadedBreweryPage == 1)
+        
+        // Failed fetch
+        await breweryService.addResponse(.breweryList(.failure(.networkingError(.other(TestError())))))
+        await appModel.getBreweryList(initialFetch: true)
+        
+        #expect(appModel.breweries.isEmpty)
+        #expect(appModel.allBreweriesHaveBeenLoaded == true)
+        #expect(appModel.lastLoadedBreweryPage == 1)
+        #expect(appModel.hasErrorOnPageLoad == false)
+        #expect(appModel.hasBreweryServiceError == true)
+        #expect(appModel.breweryServiceError?.errorDescription == BreweryServiceError.networkingError(.other(TestError())).errorDescription)
+        
+        // Successful fetch - ensure states are reset
+        await breweryService.addResponse(.breweryList(.success(testModels)))
+        await appModel.getBreweryList(initialFetch: true)
+        
+        #expect(appModel.breweries.count > 0)
+        #expect(appModel.allBreweriesHaveBeenLoaded)
+        #expect(appModel.lastLoadedBreweryPage == 1)
+        #expect(appModel.hasErrorOnPageLoad == false)
+        #expect(appModel.hasBreweryServiceError == false)
+        #expect(appModel.breweryServiceError == nil)
+    }
+    
+    @Test("All Breweries - Error on Page Load")
+    func errorOnPageLoad() async throws {
+        let testModelsPage1: [Brewery] = createUniqueBreweries(count: 50)
+        let testModelsPage2: [Brewery] = createUniqueBreweries(count: 50)
+        
+        let breweryService = TestBreweryService()
+
+        let appModel = AleTrailAppModel(
+            breweryService: breweryService
+        )
+        
+        // Starting conditions
+        #expect(appModel.breweries.isEmpty)
+        #expect(appModel.allBreweriesHaveBeenLoaded == false)
+        #expect(appModel.lastLoadedBreweryPage == 1)
+        
+        // Successful initial fetch
+        await breweryService.addResponse(.breweryList(.success(testModelsPage1)))
+        await appModel.getBreweryList(initialFetch: true)
+        
+        #expect(appModel.breweries.count == 50)
+        #expect(appModel.allBreweriesHaveBeenLoaded == false)
+        #expect(appModel.lastLoadedBreweryPage == 1)
+        
+        // Failure on second page
+        await breweryService.addResponse(.breweryList(.failure(.networkingError(.other(TestError())))))
+        await appModel.getBreweryList(initialFetch: false)
+        
+        #expect(appModel.breweries.count == 50)
+        #expect(appModel.allBreweriesHaveBeenLoaded == true)
+        #expect(appModel.lastLoadedBreweryPage == 1)
+        #expect(appModel.hasErrorOnPageLoad == true)
+        #expect(appModel.hasBreweryServiceError == true)
+        #expect(appModel.breweryServiceError?.errorDescription == BreweryServiceError.networkingError(.other(TestError())).errorDescription)
+        
+        // Try again
+        appModel.allBreweriesHaveBeenLoaded = false
+        
+        // Second page fetch
+        await breweryService.addResponse(.breweryList(.success(testModelsPage2)))
+        await appModel.getBreweryList(initialFetch: false)
+        
+        #expect(appModel.breweries.count == 100)
+        #expect(appModel.allBreweriesHaveBeenLoaded == false)
+        #expect(appModel.lastLoadedBreweryPage == 2)
+        #expect(appModel.hasErrorOnPageLoad == false)
+        #expect(appModel.hasBreweryServiceError == false)
+        #expect(appModel.breweryServiceError?.errorDescription == nil)
     }
 }
 

@@ -23,10 +23,7 @@ import Foundation
     var hasBreweryServiceError: Bool = false
     var lastLoadedBreweryPage: Int = 1
     var lastLoadedBreweryID: String?
-    
-    var hasErrorOnPageLoad: Bool {
-        breweryServiceError != nil && lastLoadedBreweryPage > 1
-    }
+    var hasErrorOnPageLoad: Bool = false
         
     init(
         breweryService: BreweryService
@@ -59,6 +56,11 @@ import Foundation
         }
     }
     
+    func retryFailedPageFetch() async {
+        allBreweriesHaveBeenLoaded = false
+        await getBreweryList(initialFetch: false)
+    }
+    
     func getBreweryList(initialFetch: Bool) async {
         if initialFetch {
             allBreweriesHaveBeenLoaded = false
@@ -74,6 +76,7 @@ import Foundation
         do {
             let result = try await breweryService.getBreweries(page: lastLoadedBreweryPage)
             hasBreweryServiceError = false
+            hasErrorOnPageLoad = false
             breweryServiceError = nil
             updateBreweries(result: result, initialFetch: initialFetch)
         } catch {
@@ -81,6 +84,7 @@ import Foundation
             allBreweriesHaveBeenLoaded = true
             breweryServiceError = error
             hasBreweryServiceError = true
+            hasErrorOnPageLoad = !initialFetch
             
             // Set page back one if required
             if lastLoadedBreweryPage > 1 {
